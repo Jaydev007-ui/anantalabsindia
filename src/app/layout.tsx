@@ -72,9 +72,9 @@ export const metadata: Metadata = {
     canonical: "https://anantalabs.in",
   },
   icons: {
-    icon: "/favicon.ico?v=3",
-    shortcut: "/favicon.ico?v=3",
-    apple: "/favicon.ico?v=3",
+    icon: "/favicon/favicon.ico?v=3",
+    shortcut: "/favicon/favicon.ico?v=3",
+    apple: "/favicon/favicon.ico?v=3",
   },
 };
 
