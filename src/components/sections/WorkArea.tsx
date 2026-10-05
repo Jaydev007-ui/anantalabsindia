@@ -1,35 +1,35 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Wrench, Globe, Smartphone, ArrowUpRight } from "lucide-react";
+import { Wrench, Brain, Activity, ArrowUpRight } from "lucide-react";
 
 const areas = [
   {
-    icon: Wrench,
-    title: "Manufacturing",
-    tag: "HARDWARE & SYSTEMS",
-    desc: "Precision engineering, hardware-in-the-loop systems, high-reliability PCB prototyping, custom CNC routing, and mechatronics assembly compliant with clinical and industrial standards.",
-    features: ["SMD Component Placement", "CAD Enclosure Engineering", "Diagnostic Sensors Assembly", "Stress & Thermal Testing"],
+    icon: Brain,
+    title: "Applied AI & Computer Vision",
+    tag: "SOFTWARE & ALGORITHMS",
+    desc: "Developing intelligent machine learning systems and computer vision algorithms for real-time video analytics, automated visual checks, and predictive analytics models.",
+    features: ["Deep Learning Models", "Object Detection (YOLO)", "Real-Time Processing", "Statistical Analysis"],
     color: "from-blue-500/10 to-primary/5",
     border: "group-hover:border-primary/40",
     iconColor: "text-primary",
   },
   {
-    icon: Globe,
-    title: "Web Development",
-    tag: "CLOUD & BACKEND ARCH",
-    desc: "Building low-latency, scalable web architectures, full-stack interfaces, dashboard portals, secure cloud API connections, and real-time medical-telemetry tracking databases.",
-    features: ["High-Security EHR Portals", "Real-Time Websockets", "Optimized Database Queries", "Next.js Engine Integration"],
+    icon: Activity,
+    title: "Healthcare & Intelligent Hardware",
+    tag: "MEDICAL & ELECTRONICS SYSTEMS",
+    desc: "Engineering diagnostic devices, precision fluidics systems, mechatronic laboratory tools, and embedded electronics compliant with safety and R&D requirements.",
+    features: ["Precision Fluidic Systems", "Biomedical Sensor Arrays", "Low-Power Firmware", "Industrial Shielding"],
     color: "from-cyan-500/10 to-secondary/5",
     border: "group-hover:border-secondary/40",
     iconColor: "text-secondary",
   },
   {
-    icon: Smartphone,
-    title: "App Development",
-    tag: "MOBILE TELEMETRY",
-    desc: "Developing native-quality iOS and Android mobile software leveraging Flutter and React Native, tailored for patient vitals tracking, device telemetry Sync, and practitioner workflows.",
-    features: ["Bluetooth IoT Connection", "Offline-First Telemetry Sync", "ISO Compliant Security", "Intuitive Practitioner UI"],
+    icon: Wrench,
+    title: "Prototyping & R&D Systems",
+    tag: "ENGINEERING & FABRICATION",
+    desc: "Developing high-fidelity custom mechatronic prototypes, custom PCB layouts, physical enclosures, and applied hardware systems to bridge research concepts with working prototypes.",
+    features: ["CAD Enclosure Engineering", "Custom PCB Prototyping", "Stress & Thermal Testing", "Applied Mechatronics"],
     color: "from-purple-500/10 to-purple-600/5",
     border: "group-hover:border-purple-400/40",
     iconColor: "text-purple-600",

@@ -162,8 +162,26 @@ export default function Products() {
                 Precision Mortuary Infusion Engineering
               </h5>
               <p className="font-sans text-slate-400 leading-relaxed text-sm">
-                The Ananta Preserv-1 is built for medical labs, hospitals, and universities requiring precise, reliable preservation methods. Its automated fluidics engine reduces procedural errors while providing maximum sanitization security.
+                The Ananta Preserv-1 is a computerized, automated fluidics platform designed for clinical and mortuary preservation.
               </p>
+              <div className="space-y-3 pt-2 text-xs font-sans text-slate-400">
+                <div>
+                  <strong className="text-white block font-semibold">Technology & Operation:</strong>
+                  Employs high-precision fluidic pumps and real-time electronic pressure sensors regulated by dynamic feedback loops to prevent tissue distortion.
+                </div>
+                <div>
+                  <strong className="text-white block font-semibold">Problem Solved:</strong>
+                  Replaces traditional manual or gravity-based methods that lead to vascular rupture, swelling, and inconsistent preservation.
+                </div>
+                <div>
+                  <strong className="text-white block font-semibold">Development Stage:</strong>
+                  Functional system prototype undergoing operational validation.
+                </div>
+                <div>
+                  <strong className="text-white block font-semibold">Applications:</strong>
+                  Anatomical departments, medical research laboratories, and hospital mortuaries.
+                </div>
+              </div>
             </div>
 
             {/* CTAs */}

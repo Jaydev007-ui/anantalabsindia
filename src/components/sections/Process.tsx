@@ -32,13 +32,13 @@ const steps = [
     step: "05",
     icon: CheckSquare,
     title: "Validation",
-    desc: "Clinical trials mapping, third-party certification checks, and double-blind diagnostic cross-checks.",
+    desc: "System integration testing, dataset cross-checks, and user validation cycles.",
   },
   {
     step: "06",
     icon: Rocket,
     title: "Deployment",
-    desc: "Cloud sync hooks, EHR API releases, medical compliance signoff, and production line manufacturing.",
+    desc: "Production environment setup, client release engineering, and ongoing maintenance.",
   },
 ];
 

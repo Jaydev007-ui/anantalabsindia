@@ -27,7 +27,7 @@ const items = [
   {
     icon: Award,
     title: "Quality Engineering",
-    desc: "Rigorous hardware testing and ISO certification compliance ensure every medical-grade device is highly robust.",
+    desc: "Rigorous hardware testing and quality control processes ensure every system is highly robust and reliable.",
   },
   {
     icon: CheckCircle,

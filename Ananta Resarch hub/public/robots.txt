@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+Allow: /research/
+Allow: /research/projects
+Allow: /research/explainers
+Allow: /research/tools
+Allow: /research/knowledge-base
+Allow: /research/experiments
+Allow: /research/briefs
+Allow: /research/trends
+Allow: /research/researchers
+Allow: /research/archive
+Allow: /research/areas
+Allow: /research/timeline
+
+Disallow: /research/admin
+
+Sitemap: https://anantalabsindia.org/research/sitemap.xml

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -9,17 +9,24 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
-const inter = Inter({
+const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
-  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-ibm-plex-sans",
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  variable: "--font-ibm-plex-mono",
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Ananta Labs India | AI Research, Healthcare Technology & Innovation",
+  title: "Ananta Labs India | Founder-Led Deep-Tech R&D Lab",
   description:
-    "Ananta Labs India is a research-driven technology company developing Artificial Intelligence, Medical Devices, Robotics, Embedded Systems, Healthcare Technologies, and next-generation innovations for real-world impact.",
+    "Ananta Labs India is a founder-led deep-tech R&D lab based in Vadodara, Gujarat, India, developing intelligence for real-world systems across AI, computer vision, medical technology, and manufacturing.",
   keywords: [
     "Artificial Intelligence India",
     "Healthcare AI",
@@ -35,6 +42,8 @@ export const metadata: Metadata = {
     "Healthcare Innovation",
     "AI Research",
     "Ananta Labs India",
+    "Vadodara",
+    "Gujarat"
   ],
   authors: [{ name: "Ananta Labs India" }],
   creator: "Ananta Labs India",
@@ -45,9 +54,9 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: "Ananta Labs India | AI Research, Healthcare Technology & Innovation",
+    title: "Ananta Labs India | Founder-Led Deep-Tech R&D Lab",
     description:
-      "Developing next-generation AI, healthcare diagnostic interfaces, embedded systems, and robotics modules for industrial impact.",
+      "Developing next-generation AI, healthcare diagnostic interfaces, embedded systems, and computer vision systems for industrial impact.",
     url: "https://anantalabs.in",
     siteName: "Ananta Labs India",
     images: [
@@ -63,9 +72,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ananta Labs India | AI Research, Healthcare Technology & Innovation",
+    title: "Ananta Labs India | Founder-Led Deep-Tech R&D Lab",
     description:
-      "Developing next-generation AI, healthcare diagnostic interfaces, embedded systems, and robotics modules for industrial impact.",
+      "Developing next-generation AI, healthcare diagnostic interfaces, embedded systems, and computer vision systems for industrial impact.",
     images: ["https://anantalabs.in/og-image.jpg"],
   },
   alternates: {
@@ -79,7 +88,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050505",
+  themeColor: "#07090A",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -98,12 +107,12 @@ export default function RootLayout({
     "url": "https://anantalabs.in",
     "logo": "https://anantalabs.in/logo.png",
     "description":
-      "Ananta Labs India is a research-driven technology corporation engineering deep-tech hardware systems, artificial intelligence diagnostics, and medical robotics.",
+      "Ananta Labs India is a founder-led deep-tech R&D lab based in Vadodara, Gujarat, India, developing intelligence for real-world systems across AI, computer vision, medical technology, and manufacturing.",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "Indiranagar, Bengaluru",
-      "addressRegion": "Karnataka",
-      "postalCode": "560038",
+      "addressLocality": "Vadodara",
+      "addressRegion": "Gujarat",
+      "postalCode": "390001",
       "addressCountry": "IN",
     },
     "contactPoint": {
@@ -116,7 +125,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable}`}>
       <head>
         <script
           type="application/ld+json"

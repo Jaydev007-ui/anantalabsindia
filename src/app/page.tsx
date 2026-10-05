@@ -1,64 +1,81 @@
 "use client";
 
-import { useState } from "react";
-import Navbar from "@/components/ui/Navbar";
-import BackgroundParticles from "@/components/ui/BackgroundParticles";
-import LoadingScreen from "@/components/ui/LoadingScreen";
-import BackToTop from "@/components/ui/BackToTop";
-import UnifyEngine from "@/components/ui/UnifyEngine";
+import { useState, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Homepage Sections
+// Custom Components
+import Preloader from "@/components/ui/Preloader";
+import Navbar from "@/components/ui/Navbar";
 import Hero from "@/components/sections/Hero";
-import About from "@/components/sections/About";
-import WorkArea from "@/components/sections/WorkArea";
-import Products from "@/components/sections/Products";
-import WhyChooseUs from "@/components/sections/WhyChooseUs";
-import Process from "@/components/sections/Process";
-import Portfolio from "@/components/sections/Portfolio";
-import Achievements from "@/components/sections/Achievements";
-import Technologies from "@/components/sections/Technologies";
-import Ecosystem from "@/components/sections/Ecosystem";
+import Manifesto from "@/components/sections/Manifesto";
+import FlagshipSystems from "@/components/sections/FlagshipSystems";
+import Capabilities from "@/components/sections/Capabilities";
+import Patents from "@/components/sections/Patents";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/ui/Footer";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (loading) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    // Background Grid subtle parallax scroll scrub
+    gsap.to("#grid-bg", {
+      backgroundPositionY: "-120px",
+      ease: "none",
+      scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.8,
+      },
+    });
+  }, [loading]);
+
   return (
     <>
-      {/* Premium Loading Preloader */}
-      <LoadingScreen onComplete={() => setLoading(false)} />
+      {/* 1. Preloader */}
+      <Preloader onComplete={() => setLoading(false)} />
 
       {!loading && (
-        <div className="relative min-h-screen bg-background text-primary selection:bg-primary/20 selection:text-white">
-          {/* Futuristic Interactive Backdrop */}
-          <BackgroundParticles />
+        <div className="relative min-h-screen text-[#E8EDE9] bg-[#07090A] selection:bg-[#7FBFA0]/20 selection:text-white">
           
-          {/* Core Sticky Navbar */}
+          {/* Subtle Parallax Background Grid */}
+          <div id="grid-bg" className="fixed inset-0 grid-noise-bg z-0 pointer-events-none" />
+
+          {/* Header Navbar */}
           <Navbar />
 
-          {/* Modular Scrolling Layout Sections */}
-          <main>
+          {/* Main sections layout */}
+          <main className="relative z-10">
+            {/* 2. Hero */}
             <Hero />
-            <About />
-            <WorkArea />
-            <WhyChooseUs />
-            <Process />
-            <Portfolio />
-            <Achievements />
-            <Technologies />
-            <Ecosystem />
+
+            {/* 3. Manifesto */}
+            <Manifesto />
+
+            {/* 4. Flagship Systems */}
+            <FlagshipSystems />
+
+            {/* 5. Capabilities */}
+            <Capabilities />
+
+            {/* 6. Patents & Recognition */}
+            <Patents />
+
+            {/* 7. Contact */}
             <Contact />
           </main>
 
-          {/* Unified Footer with Newsletter */}
+          {/* 8. Footer */}
           <Footer />
-
-          {/* Floating Back To Top Indicator */}
-          <BackToTop />
-
-          {/* Unify Content Protection Engine */}
-          <UnifyEngine />
         </div>
       )}
     </>
