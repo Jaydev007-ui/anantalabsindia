@@ -4,7 +4,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 
 const ResearchHubApp = dynamic(
-  () => import("@research/App").then((mod) => mod.App),
+  () => import("@/research-hub/App").then((mod) => mod.App),
   {
     ssr: false,
     loading: () => (

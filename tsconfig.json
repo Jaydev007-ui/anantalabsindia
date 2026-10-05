@@ -20,7 +20,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@research/*": ["./Ananta Resarch hub/src/*"]
+      "@research/*": ["./src/research-hub/*"]
     }
   },
   "include": [
