@@ -27,8 +27,8 @@ import {
 
 const STORAGE_KEYS = {
   STATS: 'ananta_stats_v1',
-  PROJECTS: 'ananta_projects_v1',
-  RESEARCHERS: 'ananta_researchers_v1',
+  PROJECTS: 'ananta_projects_v2',
+  RESEARCHERS: 'ananta_researchers_v2',
   EXPLAINERS: 'ananta_explainers_v1',
   EXPERIMENTS: 'ananta_experiments_v1',
   BRIEFS: 'ananta_briefs_v1',

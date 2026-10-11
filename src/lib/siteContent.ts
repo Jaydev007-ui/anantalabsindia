@@ -163,7 +163,7 @@ export interface TargetTask {
 export const JAYDEV_ADMIN: TeamMember = {
   id: "admin-jaydev",
   passkey: "9099093188",
-  name: "Jaydev Zala",
+  name: "Jaydevsinh Zala",
   email: "jaydev@anantalabsindia.org",
   phone: "+91 90990 93188",
   role: "Main Admin",
