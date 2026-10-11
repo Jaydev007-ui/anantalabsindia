@@ -1,28 +1,31 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
-import { useInView } from "framer-motion";
+import { SiteStatsData, INITIAL_SITE_STATS } from "@/lib/siteContent";
 
-interface StatItemProps {
+interface CounterProps {
   value: number;
   suffix: string;
   label: string;
   delay: number;
 }
 
-function Counter({ value, suffix, label, delay }: StatItemProps) {
+function Counter({ value, suffix, label, delay }: CounterProps) {
   const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   useEffect(() => {
     if (isInView) {
       let start = 0;
       const end = value;
-      if (start === end) return;
+      if (start === end) {
+        setCount(end);
+        return;
+      }
 
-      const duration = 1.5; // seconds
+      const duration = 1.6;
       const totalSteps = 60;
       const stepTime = (duration * 1000) / totalSteps;
       const increment = end / totalSteps;
@@ -48,56 +51,99 @@ function Counter({ value, suffix, label, delay }: StatItemProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
-      className="glass-card rounded-2xl p-6 text-center flex flex-col justify-center items-center h-40 border border-white/5 relative overflow-hidden group hover:border-primary/30 shadow-sm"
+      className="border border-slate-200 bg-white rounded-2xl p-6 text-center flex flex-col justify-center items-center h-36 sm:h-40 relative overflow-hidden group hover:border-[#0D9488]/40 hover:shadow-md transition-all"
     >
-      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary/10 via-secondary/30 to-primary/10 opacity-50" />
-      <span className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-white font-mono group-hover:text-primary transition-colors">
+      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#0D9488]/10 via-[#0D9488]/40 to-[#0D9488]/10 opacity-60" />
+      <span className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 font-mono group-hover:text-[#0D9488] transition-colors">
         {count}
         {suffix}
       </span>
-      <span className="font-sans text-xs uppercase tracking-widest text-slate-500 mt-2 font-bold leading-normal">
+      <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-500 mt-2 font-bold leading-normal">
         {label}
       </span>
     </motion.div>
   );
 }
 
-const stats = [
-  { value: 18, suffix: "+", label: "Research Projects", delay: 0.05 },
-  { value: 3, suffix: "+", label: "Patents Filed", delay: 0.1 },
-];
+function parseStat(raw: string, fallbackNum: number, fallbackSuffix: string) {
+  if (!raw) return { value: fallbackNum, suffix: fallbackSuffix };
+  const match = raw.match(/^(\d+(?:\.\d+)?)(.*)$/);
+  if (match) {
+    return {
+      value: parseFloat(match[1]),
+      suffix: match[2] || "",
+    };
+  }
+  return { value: fallbackNum, suffix: raw };
+}
 
 export default function Achievements() {
-  return (
-    <section className="relative py-24 md:py-32 overflow-hidden bg-transparent">
-      
-      {/* Background neon elements */}
-      <div className="absolute top-1/4 left-1/3 h-[500px] w-[500px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
+  const [stats, setStats] = useState<SiteStatsData>(INITIAL_SITE_STATS);
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+  useEffect(() => {
+    let isMounted = true;
+
+    fetch("/api/stats", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (isMounted && json?.success && json?.data) {
+          setStats(json.data);
+        }
+      })
+      .catch((e) => console.warn("Live stats fetch fallback to local:", e));
+
+    const handleUpdate = (e: any) => {
+      if (e?.detail) {
+        setStats(e.detail);
+      }
+    };
+
+    window.addEventListener("ananta_stats_updated", handleUpdate);
+    return () => {
+      isMounted = false;
+      window.removeEventListener("ananta_stats_updated", handleUpdate);
+    };
+  }, []);
+
+  const p = parseStat(stats.projectsCount, 18, "+");
+  const pat = parseStat(stats.patentsIpCount, 5, "+");
+  const exp = parseStat(stats.experimentalStudiesCount, 8, "+");
+  const res = parseStat(stats.researchAreasCount, 6, "+");
+
+  const statItems = [
+    { value: p.value, suffix: p.suffix, label: "Research Projects", delay: 0.05 },
+    { value: pat.value, suffix: pat.suffix, label: "Patents & IP Disclosures", delay: 0.1 },
+    { value: exp.value, suffix: exp.suffix, label: "Experimental Studies", delay: 0.15 },
+    { value: res.value, suffix: res.suffix, label: "Active Research Areas", delay: 0.2 },
+  ];
+
+  return (
+    <section className="relative py-16 sm:py-24 border-t border-slate-200 bg-transparent overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-12 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center space-y-4 max-w-3xl mx-auto mb-16 md:mb-20">
-          <h2 className="font-display text-xs uppercase tracking-[0.3em] text-[#0088FF] font-bold">
-            TRACK RECORD
+        <div className="text-center space-y-3 max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-200 bg-white text-[10px] font-mono font-semibold uppercase tracking-wider text-[#B45309]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#B45309] animate-pulse" />
+            TRACK RECORD // LIVE METRICS
+          </div>
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-slate-900 uppercase">
+            Engineering Track Record
           </h2>
-          <h3 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
-            Research Achievements
-          </h3>
-          <p className="font-sans text-slate-400 leading-relaxed text-sm md:text-base">
-            Indicators showcasing our technological focus and patent record.
+          <p className="font-sans text-slate-600 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
+            Real-time technological metrics documenting deployed prototypes, intellectual property filings, and industrial testbeds.
           </p>
         </div>
 
-        {/* Counter Grid - Center-aligned 2 columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-md mx-auto">
-          {stats.map((stat) => (
+        {/* Counter Grid - 4 Columns */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
+          {statItems.map((item) => (
             <Counter
-              key={stat.label}
-              value={stat.value}
-              suffix={stat.suffix}
-              label={stat.label}
-              delay={stat.delay}
+              key={item.label}
+              value={item.value}
+              suffix={item.suffix}
+              label={item.label}
+              delay={item.delay}
             />
           ))}
         </div>

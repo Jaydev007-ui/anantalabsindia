@@ -115,6 +115,10 @@ export const AdminDashboardPage: React.FC = () => {
   const [editableStats, setEditableStats] = useState({ ...stats });
   const [statsSavedNotice, setStatsSavedNotice] = useState(false);
 
+  useEffect(() => {
+    setEditableStats({ ...stats });
+  }, [stats]);
+
   // Import JSON State
   const [jsonInput, setJsonInput] = useState('');
   const [importStatus, setImportStatus] = useState<string | null>(null);
@@ -129,10 +133,10 @@ export const AdminDashboardPage: React.FC = () => {
     }
   };
 
-  const handleStatsSave = () => {
-    updateStats(editableStats);
+  const handleStatsSave = async () => {
+    await updateStats(editableStats);
     setStatsSavedNotice(true);
-    setTimeout(() => setStatsSavedNotice(false), 2500);
+    setTimeout(() => setStatsSavedNotice(false), 3000);
   };
 
   const handleCreateNewResearcher = () => {
@@ -2161,7 +2165,7 @@ export const AdminDashboardPage: React.FC = () => {
               Edit Dynamic Homepage Statistics
             </h2>
             <p className="text-xs text-slate-500">
-              Update institutional counters displayed on the homepage. Changes persist instantly in local storage.
+              Update institutional counters displayed across the website and research hub. Changes publish live to all visitors across the entire domain.
             </p>
           </div>
 
@@ -2219,8 +2223,8 @@ export const AdminDashboardPage: React.FC = () => {
 
           <div className="pt-2 flex items-center justify-between">
             {statsSavedNotice ? (
-              <span className="text-xs font-mono text-emerald-600 flex items-center gap-1">
-                <CheckCircle2 className="w-4 h-4" /> Live statistics updated!
+              <span className="text-xs font-mono text-emerald-600 flex items-center gap-1 font-semibold">
+                <CheckCircle2 className="w-4 h-4" /> Live statistics published across entire domain!
               </span>
             ) : <span />}
 

@@ -9,6 +9,7 @@ import Preloader from "@/components/ui/Preloader";
 import Navbar from "@/components/ui/Navbar";
 import Hero from "@/components/sections/Hero";
 import Manifesto from "@/components/sections/Manifesto";
+import Achievements from "@/components/sections/Achievements";
 import FlagshipSystems from "@/components/sections/FlagshipSystems";
 import Capabilities from "@/components/sections/Capabilities";
 import Patents from "@/components/sections/Patents";
@@ -63,6 +64,7 @@ export default function Home() {
         <main className="relative z-10">
           <Hero />
           <Manifesto />
+          <Achievements />
           <FlagshipSystems />
           <StoreSection />
           <Capabilities />

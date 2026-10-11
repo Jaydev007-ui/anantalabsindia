@@ -82,6 +82,22 @@ export interface SiteContentData {
   };
 }
 
+export interface SiteStatsData {
+  projectsCount: string;
+  experimentalStudiesCount: string;
+  patentsIpCount: string;
+  researchAreasCount: string;
+  researchersCount: string;
+}
+
+export const INITIAL_SITE_STATS: SiteStatsData = {
+  projectsCount: "18+",
+  experimentalStudiesCount: "8+",
+  patentsIpCount: "5+",
+  researchAreasCount: "6+",
+  researchersCount: "3+",
+};
+
 export interface TeamMember {
   id: string;
   passkey: string;

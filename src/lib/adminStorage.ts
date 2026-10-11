@@ -4,6 +4,8 @@ import {
   INITIAL_SITE_CONTENT,
   JAYDEV_ADMIN,
   SiteContentData,
+  SiteStatsData,
+  INITIAL_SITE_STATS,
   TeamMember,
   RDResearchItem,
   AttendanceRecord,
@@ -13,6 +15,7 @@ import { getCollection } from "./db";
 
 // Memory caches
 let memoryContent: SiteContentData = { ...INITIAL_SITE_CONTENT };
+let memoryStats: SiteStatsData = { ...INITIAL_SITE_STATS };
 let memoryTeam: TeamMember[] = [{ ...JAYDEV_ADMIN }];
 let memoryRD: RDResearchItem[] = [];
 let memoryAttendance: AttendanceRecord[] = [];
@@ -520,4 +523,50 @@ export async function deleteAdminInquiry(id: string): Promise<any[]> {
   }
 
   return memoryInquiries;
+}
+
+// ---------------- Dynamic Live Statistics ----------------
+export async function getSiteStats(): Promise<SiteStatsData> {
+  try {
+    const col = await getCollection("site_stats");
+    if (col) {
+      const doc = await col.findOne({ _id: "current_stats" as any });
+      if (doc && doc.data) {
+        memoryStats = { ...INITIAL_SITE_STATS, ...doc.data };
+        return memoryStats;
+      }
+    }
+  } catch (e) {
+    console.error("DB read error for site_stats", e);
+  }
+
+  // Fallback to local file or memory
+  const fileData = readLocalFile<SiteStatsData>("site_stats.json", memoryStats);
+  memoryStats = { ...INITIAL_SITE_STATS, ...fileData };
+  return memoryStats;
+}
+
+export async function saveSiteStats(data: Partial<SiteStatsData>): Promise<SiteStatsData> {
+  const current = await getSiteStats();
+  const merged: SiteStatsData = {
+    ...current,
+    ...data,
+  };
+  memoryStats = merged;
+  writeLocalFile("site_stats.json", merged);
+
+  try {
+    const col = await getCollection("site_stats");
+    if (col) {
+      await col.updateOne(
+        { _id: "current_stats" as any },
+        { $set: { data: merged, updatedAt: new Date().toISOString() } },
+        { upsert: true }
+      );
+    }
+  } catch (e) {
+    console.error("DB write error for site_stats", e);
+  }
+
+  return memoryStats;
 }

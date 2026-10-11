@@ -38,6 +38,8 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import {
   SiteContentData,
+  SiteStatsData,
+  INITIAL_SITE_STATS,
   TeamMember,
   RDResearchItem,
   AttendanceRecord,
@@ -57,11 +59,13 @@ export default function AdminPage() {
 
   // Navigation Tabs
   const [activeTab, setActiveTab] = useState<
-    "store" | "patents" | "flagship" | "manifesto" | "orders" | "team" | "rd" | "attendance" | "targets" | "analytics"
+    "store" | "patents" | "flagship" | "manifesto" | "stats" | "orders" | "team" | "rd" | "attendance" | "targets" | "analytics"
   >("store");
 
   // Live Data Stores
   const [siteContent, setSiteContent] = useState<SiteContentData>(INITIAL_SITE_CONTENT);
+  const [liveStats, setLiveStats] = useState<SiteStatsData>(INITIAL_SITE_STATS);
+  const [statsSaving, setStatsSaving] = useState(false);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([JAYDEV_ADMIN]);
   const [rdItems, setRdItems] = useState<RDResearchItem[]>([]);
   const [attendanceLogs, setAttendanceLogs] = useState<AttendanceRecord[]>([]);
@@ -123,7 +127,7 @@ export default function AdminPage() {
   const loadAllData = async () => {
     setLoading(true);
     try {
-      const [cRes, tRes, rdRes, attRes, tarRes, oRes, iRes] = await Promise.all([
+      const [cRes, tRes, rdRes, attRes, tarRes, oRes, iRes, sRes] = await Promise.all([
         fetch("/api/content", { cache: "no-store" }).then((r) => r.json()),
         fetch("/api/team", { cache: "no-store" }).then((r) => r.json()),
         fetch("/api/rd", { cache: "no-store" }).then((r) => r.json()),
@@ -131,6 +135,7 @@ export default function AdminPage() {
         fetch("/api/targets", { cache: "no-store" }).then((r) => r.json()),
         fetch("/api/orders", { cache: "no-store" }).then((r) => r.json()).catch(() => []),
         fetch("/api/inquiries", { cache: "no-store" }).then((r) => r.json()).catch(() => []),
+        fetch("/api/stats", { cache: "no-store" }).then((r) => r.json()).catch(() => null),
       ]);
 
       if (cRes?.data) setSiteContent(cRes.data);
@@ -140,6 +145,7 @@ export default function AdminPage() {
       if (tarRes?.data) setTargets(tarRes.data);
       if (Array.isArray(oRes)) setOrders(oRes);
       if (Array.isArray(iRes)) setInquiries(iRes);
+      if (sRes?.data) setLiveStats(sRes.data);
     } catch (e) {
       console.error("Error loading admin data", e);
     } finally {
@@ -577,6 +583,28 @@ export default function AdminPage() {
     await saveContentChanges(updated);
   };
 
+  const handleSaveLiveStats = async () => {
+    setStatsSaving(true);
+    try {
+      const res = await fetch("/api/stats", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(liveStats),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.data) setLiveStats(json.data);
+        setActionSuccess("Live statistics published across entire domain!");
+        window.dispatchEvent(new CustomEvent("ananta_stats_updated", { detail: liveStats }));
+        setTimeout(() => setActionSuccess(null), 3000);
+      }
+    } catch (e) {
+      console.error("Failed to save live stats:", e);
+    } finally {
+      setStatsSaving(false);
+    }
+  };
+
   // ==========================================
   // 1. LOGIN SCREEN (ROLE-BASED PASSKEY)
   // ==========================================
@@ -786,6 +814,18 @@ export default function AdminPage() {
           >
             <Sliders className="w-4 h-4 shrink-0" />
             <span>Manifesto & Hero</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("stats")}
+            className={`flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap shrink-0 ${
+              activeTab === "stats"
+                ? "bg-[#7FBFA0] text-black font-bold shadow-md shadow-[#7FBFA0]/20"
+                : "text-slate-400 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <BarChart3 className="w-4 h-4 shrink-0" />
+            <span>Live Stats</span>
           </button>
 
           <button
@@ -1245,6 +1285,156 @@ export default function AdminPage() {
                     Save Manifesto Changes
                   </button>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* ==================================================== */}
+          {/* TAB: LIVE STATISTICS (DOMAIN-WIDE)                   */}
+          {/* ==================================================== */}
+          {activeTab === "stats" && (
+            <div className="space-y-6">
+              <div className="pb-4 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-xl font-bold text-white font-display">Live Institutional Statistics</h2>
+                  <p className="text-xs text-slate-400">
+                    Update live statistics across the main website and research hub. Changes persist to the central database and update instantly for all visitors across the domain.
+                  </p>
+                </div>
+                <button
+                  onClick={handleSaveLiveStats}
+                  disabled={statsSaving}
+                  className="px-5 py-2.5 rounded-xl bg-[#7FBFA0] text-black font-bold text-xs uppercase tracking-wider hover:bg-[#98d6b7] transition-all cursor-pointer shadow-md flex items-center gap-2 self-start sm:self-auto disabled:opacity-50"
+                >
+                  <BarChart3 className="w-4 h-4" />
+                  {statsSaving ? "Publishing..." : "Publish Live Stats Across Domain"}
+                </button>
+              </div>
+
+              {/* Form Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="p-5 rounded-2xl border border-white/10 bg-[#0E1213] space-y-2">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#7FBFA0] font-bold">
+                    Research Projects Count
+                  </label>
+                  <p className="text-[11px] text-slate-400">
+                    Appears in track record on main website and research hub header.
+                  </p>
+                  <input
+                    type="text"
+                    value={liveStats.projectsCount}
+                    onChange={(e) => setLiveStats({ ...liveStats, projectsCount: e.target.value })}
+                    placeholder="e.g. 18+"
+                    className="w-full px-4 py-2.5 rounded-xl bg-black/50 border border-white/10 text-white font-mono text-sm focus:border-[#7FBFA0] focus:outline-none"
+                  />
+                </div>
+
+                <div className="p-5 rounded-2xl border border-white/10 bg-[#0E1213] space-y-2">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#7FBFA0] font-bold">
+                    Patents & IP Disclosures Count
+                  </label>
+                  <p className="text-[11px] text-slate-400">
+                    Documented intellectual property disclosures and patent applications.
+                  </p>
+                  <input
+                    type="text"
+                    value={liveStats.patentsIpCount}
+                    onChange={(e) => setLiveStats({ ...liveStats, patentsIpCount: e.target.value })}
+                    placeholder="e.g. 5+"
+                    className="w-full px-4 py-2.5 rounded-xl bg-black/50 border border-white/10 text-white font-mono text-sm focus:border-[#7FBFA0] focus:outline-none"
+                  />
+                </div>
+
+                <div className="p-5 rounded-2xl border border-white/10 bg-[#0E1213] space-y-2">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#7FBFA0] font-bold">
+                    Experimental Studies Count
+                  </label>
+                  <p className="text-[11px] text-slate-400">
+                    Completed laboratory experiments, trials, and bench validations.
+                  </p>
+                  <input
+                    type="text"
+                    value={liveStats.experimentalStudiesCount}
+                    onChange={(e) => setLiveStats({ ...liveStats, experimentalStudiesCount: e.target.value })}
+                    placeholder="e.g. 8+"
+                    className="w-full px-4 py-2.5 rounded-xl bg-black/50 border border-white/10 text-white font-mono text-sm focus:border-[#7FBFA0] focus:outline-none"
+                  />
+                </div>
+
+                <div className="p-5 rounded-2xl border border-white/10 bg-[#0E1213] space-y-2">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#7FBFA0] font-bold">
+                    Active Research Areas Count
+                  </label>
+                  <p className="text-[11px] text-slate-400">
+                    Interdisciplinary clusters (AI, CV, Med-Tech, Fluidics, Mechatronics).
+                  </p>
+                  <input
+                    type="text"
+                    value={liveStats.researchAreasCount}
+                    onChange={(e) => setLiveStats({ ...liveStats, researchAreasCount: e.target.value })}
+                    placeholder="e.g. 6+"
+                    className="w-full px-4 py-2.5 rounded-xl bg-black/50 border border-white/10 text-white font-mono text-sm focus:border-[#7FBFA0] focus:outline-none"
+                  />
+                </div>
+
+                <div className="p-5 rounded-2xl border border-white/10 bg-[#0E1213] space-y-2 md:col-span-2">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#7FBFA0] font-bold">
+                    Core Researchers & Inventors Count
+                  </label>
+                  <p className="text-[11px] text-slate-400">
+                    Lead researchers, inventors, and principal research associates.
+                  </p>
+                  <input
+                    type="text"
+                    value={liveStats.researchersCount}
+                    onChange={(e) => setLiveStats({ ...liveStats, researchersCount: e.target.value })}
+                    placeholder="e.g. 3+"
+                    className="w-full px-4 py-2.5 rounded-xl bg-black/50 border border-white/10 text-white font-mono text-sm focus:border-[#7FBFA0] focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Live Preview Bar */}
+              <div className="p-6 rounded-2xl border border-white/10 bg-[#0A0D0F] space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-xs font-mono text-slate-300 font-bold uppercase tracking-wider">
+                    Live Domain-Wide Preview
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+                    <div className="text-xl font-mono font-bold text-white">{liveStats.projectsCount}</div>
+                    <div className="text-[10px] text-slate-400 font-mono">Projects</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+                    <div className="text-xl font-mono font-bold text-white">{liveStats.patentsIpCount}</div>
+                    <div className="text-[10px] text-slate-400 font-mono">Patents & IP</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+                    <div className="text-xl font-mono font-bold text-white">{liveStats.experimentalStudiesCount}</div>
+                    <div className="text-[10px] text-slate-400 font-mono">Experiments</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+                    <div className="text-xl font-mono font-bold text-white">{liveStats.researchAreasCount}</div>
+                    <div className="text-[10px] text-slate-400 font-mono">R&D Areas</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/5 text-center col-span-2 sm:col-span-1">
+                    <div className="text-xl font-mono font-bold text-white">{liveStats.researchersCount}</div>
+                    <div className="text-[10px] text-slate-400 font-mono">Researchers</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <button
+                  onClick={handleSaveLiveStats}
+                  disabled={statsSaving}
+                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#7FBFA0] text-black font-bold text-xs uppercase tracking-widest hover:bg-[#98d6b7] transition-all cursor-pointer shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  <BarChart3 className="w-4 h-4" />
+                  {statsSaving ? "Publishing to Domain..." : "Save & Publish Live Stats Across Domain"}
+                </button>
               </div>
             </div>
           )}

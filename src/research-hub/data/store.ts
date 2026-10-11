@@ -179,9 +179,47 @@ export function useHubData() {
   const [knowledgeBase, setKnowledgeBaseState] = useState<KnowledgeArticle[]>(() => getStoredData(STORAGE_KEYS.KNOWLEDGE_BASE, initialKnowledgeBase));
   const timeline = initialTimelineMilestones;
 
-  const updateStats = (newStats: HubStatistics) => {
+  // Sync Live Statistics across entire domain via central API
+  useEffect(() => {
+    let isMounted = true;
+    fetch('/api/stats', { cache: 'no-store' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (isMounted && json?.success && json?.data) {
+          setStatsState(json.data);
+          setStoredData(STORAGE_KEYS.STATS, json.data);
+        }
+      })
+      .catch((e) => console.warn('Live stats fetch fallback to local:', e));
+
+    const handleStatsSync = (e: any) => {
+      if (e?.detail) {
+        setStatsState(e.detail);
+        setStoredData(STORAGE_KEYS.STATS, e.detail);
+      }
+    };
+
+    window.addEventListener('ananta_stats_updated', handleStatsSync);
+    return () => {
+      isMounted = false;
+      window.removeEventListener('ananta_stats_updated', handleStatsSync);
+    };
+  }, []);
+
+  const updateStats = async (newStats: HubStatistics) => {
     setStatsState(newStats);
     setStoredData(STORAGE_KEYS.STATS, newStats);
+
+    try {
+      await fetch('/api/stats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newStats),
+      });
+      window.dispatchEvent(new CustomEvent('ananta_stats_updated', { detail: newStats }));
+    } catch (e) {
+      console.error('Failed to post live stats to /api/stats:', e);
+    }
   };
 
   const saveProject = (project: ResearchProject) => {
