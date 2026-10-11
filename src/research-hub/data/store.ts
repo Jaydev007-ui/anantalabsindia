@@ -188,6 +188,7 @@ export function useHubData() {
         if (isMounted && json?.success && json?.data) {
           setStatsState(json.data);
           setStoredData(STORAGE_KEYS.STATS, json.data);
+          setStoredData('ananta_saved_stats', json.data);
         }
       })
       .catch((e) => console.warn('Live stats fetch fallback to local:', e));
@@ -196,6 +197,7 @@ export function useHubData() {
       if (e?.detail) {
         setStatsState(e.detail);
         setStoredData(STORAGE_KEYS.STATS, e.detail);
+        setStoredData('ananta_saved_stats', e.detail);
       }
     };
 
@@ -209,6 +211,7 @@ export function useHubData() {
   const updateStats = async (newStats: HubStatistics) => {
     setStatsState(newStats);
     setStoredData(STORAGE_KEYS.STATS, newStats);
+    setStoredData('ananta_saved_stats', newStats);
 
     try {
       await fetch('/api/stats', {

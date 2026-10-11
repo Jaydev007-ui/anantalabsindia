@@ -64,7 +64,20 @@ export default function AdminPage() {
 
   // Live Data Stores
   const [siteContent, setSiteContent] = useState<SiteContentData>(INITIAL_SITE_CONTENT);
-  const [liveStats, setLiveStats] = useState<SiteStatsData>(INITIAL_SITE_STATS);
+  const [liveStats, setLiveStats] = useState<SiteStatsData>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("ananta_saved_stats") || localStorage.getItem("ananta_stats_v1");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.projectsCount) {
+            return { ...INITIAL_SITE_STATS, ...parsed };
+          }
+        }
+      } catch {}
+    }
+    return INITIAL_SITE_STATS;
+  });
   const [statsSaving, setStatsSaving] = useState(false);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([JAYDEV_ADMIN]);
   const [rdItems, setRdItems] = useState<RDResearchItem[]>([]);
@@ -145,7 +158,21 @@ export default function AdminPage() {
       if (tarRes?.data) setTargets(tarRes.data);
       if (Array.isArray(oRes)) setOrders(oRes);
       if (Array.isArray(iRes)) setInquiries(iRes);
-      if (sRes?.data) setLiveStats(sRes.data);
+      if (sRes?.data) {
+        setLiveStats(sRes.data);
+        try {
+          localStorage.setItem("ananta_saved_stats", JSON.stringify(sRes.data));
+          localStorage.setItem("ananta_stats_v1", JSON.stringify(sRes.data));
+        } catch {}
+      } else {
+        try {
+          const cached = localStorage.getItem("ananta_saved_stats") || localStorage.getItem("ananta_stats_v1");
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            if (parsed && parsed.projectsCount) setLiveStats((prev) => ({ ...prev, ...parsed }));
+          }
+        } catch {}
+      }
     } catch (e) {
       console.error("Error loading admin data", e);
     } finally {
@@ -586,6 +613,12 @@ export default function AdminPage() {
   const handleSaveLiveStats = async () => {
     setStatsSaving(true);
     try {
+      // Optimistically persist to client storage
+      try {
+        localStorage.setItem("ananta_saved_stats", JSON.stringify(liveStats));
+        localStorage.setItem("ananta_stats_v1", JSON.stringify(liveStats));
+      } catch {}
+
       const res = await fetch("/api/stats", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -593,9 +626,14 @@ export default function AdminPage() {
       });
       if (res.ok) {
         const json = await res.json();
+        const finalData = json.data || liveStats;
         if (json.data) setLiveStats(json.data);
+        try {
+          localStorage.setItem("ananta_saved_stats", JSON.stringify(finalData));
+          localStorage.setItem("ananta_stats_v1", JSON.stringify(finalData));
+        } catch {}
         setActionSuccess("Live statistics published across entire domain!");
-        window.dispatchEvent(new CustomEvent("ananta_stats_updated", { detail: liveStats }));
+        window.dispatchEvent(new CustomEvent("ananta_stats_updated", { detail: finalData }));
         setTimeout(() => setActionSuccess(null), 3000);
       }
     } catch (e) {

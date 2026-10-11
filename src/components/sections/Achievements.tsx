@@ -78,16 +78,44 @@ function parseStat(raw: string, fallbackNum: number, fallbackSuffix: string) {
 }
 
 export default function Achievements() {
-  const [stats, setStats] = useState<SiteStatsData>(INITIAL_SITE_STATS);
+  const [stats, setStats] = useState<SiteStatsData>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("ananta_saved_stats") || localStorage.getItem("ananta_stats_v1");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.projectsCount) {
+            return { ...INITIAL_SITE_STATS, ...parsed };
+          }
+        }
+      } catch {}
+    }
+    return INITIAL_SITE_STATS;
+  });
 
   useEffect(() => {
     let isMounted = true;
+
+    // Check localStorage immediately after client mount
+    try {
+      const saved = localStorage.getItem("ananta_saved_stats") || localStorage.getItem("ananta_stats_v1");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.projectsCount) {
+          setStats((prev) => ({ ...prev, ...parsed }));
+        }
+      }
+    } catch {}
 
     fetch("/api/stats", { cache: "no-store" })
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
         if (isMounted && json?.success && json?.data) {
           setStats(json.data);
+          try {
+            localStorage.setItem("ananta_saved_stats", JSON.stringify(json.data));
+            localStorage.setItem("ananta_stats_v1", JSON.stringify(json.data));
+          } catch {}
         }
       })
       .catch((e) => console.warn("Live stats fetch fallback to local:", e));
@@ -95,6 +123,10 @@ export default function Achievements() {
     const handleUpdate = (e: any) => {
       if (e?.detail) {
         setStats(e.detail);
+        try {
+          localStorage.setItem("ananta_saved_stats", JSON.stringify(e.detail));
+          localStorage.setItem("ananta_stats_v1", JSON.stringify(e.detail));
+        } catch {}
       }
     };
 

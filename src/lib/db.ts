@@ -11,6 +11,7 @@ const BINS: Record<string, string> = {
   inquiries: "https://extendsclass.com/api/json-storage/bin/fefebbe",
   staff: "https://extendsclass.com/api/json-storage/bin/fcffbac",
   threats: "https://extendsclass.com/api/json-storage/bin/cbdcace",
+  stats: "https://extendsclass.com/api/json-storage/bin/befcbbd",
 };
 
 // MySQL configuration params
@@ -54,26 +55,26 @@ export async function getCollection(collectionName: string) {
 }
 
 // Helper functions for JSON Blob Sync Fallback
-export async function getKvData(key: string): Promise<any[]> {
+export async function getKvData<T = any>(key: string): Promise<T | null> {
   const url = BINS[key];
-  if (!url) return [];
+  if (!url) return null;
 
   try {
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) {
       console.error(`ExtendsClass read failed for key ${key} with status ${res.status}`);
-      return [];
+      return null;
     }
     const text = await res.text();
-    const parsed = JSON.parse(text || "[]");
-    return Array.isArray(parsed) ? parsed : [];
+    const parsed = JSON.parse(text || "null");
+    return parsed;
   } catch (e) {
     console.error(`JSON Blob read failed for key ${key}:`, e);
-    return [];
+    return null;
   }
 }
 
-export async function saveKvData(key: string, data: any[]): Promise<boolean> {
+export async function saveKvData(key: string, data: any): Promise<boolean> {
   const url = BINS[key];
   if (!url) return false;
 

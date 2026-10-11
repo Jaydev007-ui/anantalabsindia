@@ -11,7 +11,7 @@ import {
   AttendanceRecord,
   TargetTask,
 } from "./siteContent";
-import { getCollection } from "./db";
+import { getCollection, getKvData, saveKvData } from "./db";
 
 // Memory caches
 let memoryContent: SiteContentData = { ...INITIAL_SITE_CONTENT };
@@ -527,6 +527,7 @@ export async function deleteAdminInquiry(id: string): Promise<any[]> {
 
 // ---------------- Dynamic Live Statistics ----------------
 export async function getSiteStats(): Promise<SiteStatsData> {
+  // 1. Try MongoDB first if configured
   try {
     const col = await getCollection("site_stats");
     if (col) {
@@ -540,7 +541,18 @@ export async function getSiteStats(): Promise<SiteStatsData> {
     console.error("DB read error for site_stats", e);
   }
 
-  // Fallback to local file or memory
+  // 2. Try Persistent Cloud KV (extendsclass bin) for serverless durability across restarts
+  try {
+    const cloudData = await getKvData<SiteStatsData>("stats");
+    if (cloudData && typeof cloudData === "object" && cloudData.projectsCount) {
+      memoryStats = { ...INITIAL_SITE_STATS, ...cloudData };
+      return memoryStats;
+    }
+  } catch (e) {
+    console.error("Cloud KV read error for stats:", e);
+  }
+
+  // 3. Fallback to local file or memory
   const fileData = readLocalFile<SiteStatsData>("site_stats.json", memoryStats);
   memoryStats = { ...INITIAL_SITE_STATS, ...fileData };
   return memoryStats;
@@ -553,8 +565,18 @@ export async function saveSiteStats(data: Partial<SiteStatsData>): Promise<SiteS
     ...data,
   };
   memoryStats = merged;
+
+  // Persist locally
   writeLocalFile("site_stats.json", merged);
 
+  // Persist to Cloud KV storage
+  try {
+    await saveKvData("stats", merged);
+  } catch (e) {
+    console.error("Cloud KV write error for stats:", e);
+  }
+
+  // Persist to MongoDB if available
   try {
     const col = await getCollection("site_stats");
     if (col) {
