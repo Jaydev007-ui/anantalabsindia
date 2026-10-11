@@ -12,6 +12,7 @@ import Manifesto from "@/components/sections/Manifesto";
 import FlagshipSystems from "@/components/sections/FlagshipSystems";
 import Capabilities from "@/components/sections/Capabilities";
 import Patents from "@/components/sections/Patents";
+import StoreSection from "@/components/sections/StoreSection";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/ui/Footer";
 
@@ -63,6 +64,7 @@ export default function Home() {
           <Hero />
           <Manifesto />
           <FlagshipSystems />
+          <StoreSection />
           <Capabilities />
           <Patents />
           <Contact />

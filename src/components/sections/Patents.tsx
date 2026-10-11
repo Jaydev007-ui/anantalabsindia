@@ -41,8 +41,13 @@ const seals = [
   }
 ];
 
+import { useSiteContent } from "@/lib/useSiteContent";
+
 export default function Patents() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { content } = useSiteContent();
+  const patentItems = content?.patents?.items?.length ? content.patents.items : seals;
+  const sectionTag = content?.patents?.sectionTag || "04 // RECOGNITION & INTELLECTUAL PROPERTY";
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -82,13 +87,13 @@ export default function Patents() {
         
         {/* Section Header */}
         <div className="flex items-center gap-4 mb-16">
-          <span className="font-mono text-xs text-[#C98A4B]">04 // RECOGNITION & INTELLECTUAL PROPERTY</span>
+          <span className="font-mono text-xs text-[#C98A4B]">{sectionTag}</span>
           <div className="h-[1px] flex-1 bg-white/5" />
         </div>
 
         {/* Seals Row Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {seals.map((seal) => (
+          {patentItems.map((seal) => (
             <div
               key={seal.id}
               className="panel-border border border-white/5 bg-[#0E1213] p-6 relative flex flex-col justify-between min-h-[340px] rounded-none hover:border-[#C98A4B] transition-colors duration-300 group"
