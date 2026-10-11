@@ -81,14 +81,18 @@ export const metadata: Metadata = {
     canonical: "https://anantalabs.in",
   },
   icons: {
-    icon: "/favicon/favicon.ico?v=3",
-    shortcut: "/favicon/favicon.ico?v=3",
-    apple: "/favicon/favicon.ico?v=3",
+    icon: [
+      { url: "/logo.jpg", type: "image/jpeg" },
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/favicon/logo.png", type: "image/png" },
+    ],
+    shortcut: "/logo.jpg",
+    apple: "/logo.jpg",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#07090A",
+  themeColor: "#F8FAFC",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -105,7 +109,7 @@ export default function RootLayout({
     "@type": "Corporation",
     "name": "Ananta Labs India",
     "url": "https://anantalabs.in",
-    "logo": "https://anantalabs.in/logo.png",
+    "logo": "https://anantalabs.in/logo.jpg",
     "description":
       "Ananta Labs India is a founder-led deep-tech R&D lab based in Vadodara, Gujarat, India, developing intelligence for real-world systems across AI, computer vision, medical technology, and manufacturing.",
     "address": {
@@ -127,12 +131,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable}`}>
       <head>
+        <link rel="icon" href="/logo.jpg" type="image/jpeg" />
+        <link rel="shortcut icon" href="/logo.jpg" type="image/jpeg" />
+        <link rel="apple-touch-icon" href="/logo.jpg" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-background text-white font-sans antialiased overflow-x-hidden selection:bg-primary/20 selection:text-white">
+      <body className="min-h-screen bg-background text-foreground font-sans antialiased overflow-x-hidden selection:bg-primary/20 selection:text-foreground">
         {children}
       </body>
     </html>
