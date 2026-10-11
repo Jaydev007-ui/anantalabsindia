@@ -1,6 +1,5 @@
 "use client";
 
-import { Key } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -34,15 +33,12 @@ export default function Footer() {
           </span>
         </div>
 
-        {/* Center: Admin Portal shortcut */}
+        {/* Center: UNIFY Engine Security status & Navigation */}
         <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs font-mono">
-          <a
-            href="/admin"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-[#0D9488]/10 hover:text-[#0D9488] hover:border-[#0D9488]/40 transition-colors text-slate-700"
-          >
-            <Key className="w-3.5 h-3.5 text-[#0D9488]" />
-            <span>Admin Executive Portal</span>
-          </a>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-50 text-emerald-700 text-[10px] font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span>UNIFY Engine Active</span>
+          </div>
           <a
             href="/research"
             className="hover:text-[#0D9488] transition-colors"

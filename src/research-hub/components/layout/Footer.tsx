@@ -135,7 +135,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal }) => {
               <li><Link to="/research/corrections" className="hover:text-sky-600 transition">Correction Policy</Link></li>
               <li><Link to="/research/privacy" className="hover:text-sky-600 transition">Privacy & Data Policy</Link></li>
               <li><Link to="/research/terms" className="hover:text-sky-600 transition">Terms of Use & Copyright</Link></li>
-              <li><Link to="/research/admin" className="text-sky-600 hover:text-sky-700 transition font-mono font-medium">Admin CMS Portal</Link></li>
             </ul>
           </div>
         </div>

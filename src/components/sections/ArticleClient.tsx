@@ -5,7 +5,6 @@ import Navbar from "@/components/ui/Navbar";
 import BackgroundParticles from "@/components/ui/BackgroundParticles";
 import LoadingScreen from "@/components/ui/LoadingScreen";
 import BackToTop from "@/components/ui/BackToTop";
-import UnifyEngine from "@/components/ui/UnifyEngine";
 import Footer from "@/components/ui/Footer";
 import { Article } from "@/lib/articles";
 import Link from "next/link";
@@ -182,9 +181,6 @@ export default function ArticleClient({ article, relatedArticles }: ArticleClien
 
           {/* Floating Back To Top Indicator */}
           <BackToTop />
-
-          {/* Unify Content Protection Engine */}
-          <UnifyEngine />
         </div>
       )}
     </>

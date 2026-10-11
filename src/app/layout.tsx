@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import UnifyEngine from "@/components/ui/UnifyEngine";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -142,6 +143,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-background text-foreground font-sans antialiased overflow-x-hidden selection:bg-primary/20 selection:text-foreground">
+        <UnifyEngine />
         {children}
       </body>
     </html>

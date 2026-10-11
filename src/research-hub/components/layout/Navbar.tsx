@@ -74,10 +74,6 @@ export const Navbar: React.FC = () => {
               <Clock className="w-3 h-3 text-sky-600" />
               <span className="hidden md:inline">2026 R&D Roadmap</span>
             </Link>
-            <Link to="/research/admin" className="hover:text-sky-600 transition flex items-center gap-1 text-slate-600">
-              <Lock className="w-3 h-3 text-slate-500" />
-              <span>Admin CMS</span>
-            </Link>
           </div>
         </div>
 
@@ -389,7 +385,6 @@ export const Navbar: React.FC = () => {
               <Link onClick={() => setMobileMenuOpen(false)} to="/research/about" className="block px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 rounded-lg">About Our Research</Link>
               <Link onClick={() => setMobileMenuOpen(false)} to="/research/philosophy" className="block px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 rounded-lg">Research Philosophy</Link>
               <Link onClick={() => setMobileMenuOpen(false)} to="/research/contact" className="block px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 rounded-lg">Contact & Collaboration</Link>
-              <Link onClick={() => setMobileMenuOpen(false)} to="/research/admin" className="block px-3 py-2 text-sm text-sky-600 hover:bg-slate-50 rounded-lg">Admin CMS Portal</Link>
             </div>
 
             <div className="pt-4 flex flex-col gap-2">

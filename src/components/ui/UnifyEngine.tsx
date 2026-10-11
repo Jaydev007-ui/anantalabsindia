@@ -32,7 +32,12 @@ export default function UnifyEngine() {
   };
 
   useEffect(() => {
-    // 1. Disable text selection, touch callouts, and dragstart globally via CSS
+    // Exempt admin routes so administrator can manage CMS comfortably
+    if (typeof window !== "undefined" && (window.location.pathname.startsWith("/admin") || window.location.pathname.startsWith("/research/admin"))) {
+      return;
+    }
+
+    // 1. Disable text selection, touch callouts, and dragstart globally via CSS (preserving forms & inputs)
     const style = document.createElement("style");
     style.innerHTML = `
       body {
@@ -41,6 +46,12 @@ export default function UnifyEngine() {
         -ms-user-select: none !important;
         user-select: none !important;
         -webkit-touch-callout: none !important;
+      }
+      input, textarea, select, [contenteditable="true"] {
+        -webkit-user-select: text !important;
+        -moz-user-select: text !important;
+        -ms-user-select: text !important;
+        user-select: text !important;
       }
       img {
         -webkit-user-drag: none !important;
@@ -98,8 +109,12 @@ export default function UnifyEngine() {
       }
     };
 
-    // 5. Intercept selectstart on document
+    // 5. Intercept selectstart on non-form elements
     const handleSelectStart = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) {
+        return;
+      }
       e.preventDefault();
     };
 
@@ -130,7 +145,9 @@ export default function UnifyEngine() {
 
     return () => {
       // Cleanup
-      document.head.removeChild(style);
+      if (style.parentNode) {
+        document.head.removeChild(style);
+      }
       document.removeEventListener("contextmenu", handleContextMenu);
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("dragstart", handleDragStart);

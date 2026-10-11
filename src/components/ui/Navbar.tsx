@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, ShieldCheck, Key } from "lucide-react";
+import { Menu, X, ShieldCheck } from "lucide-react";
 
 const navItems = [
   { name: "Home", href: "#home" },
@@ -12,7 +12,6 @@ const navItems = [
   { name: "Patents", href: "#patents" },
   { name: "Research Hub", href: "/research" },
   { name: "Contact", href: "#contact" },
-  { name: "Admin Panel", href: "/admin" },
 ];
 
 export default function Navbar() {
@@ -139,16 +138,6 @@ export default function Navbar() {
 
             {/* Desktop & Tablet Header Actions */}
             <div className="flex items-center gap-2 sm:gap-3">
-              {/* Admin Portal Button - always accessible on all screen sizes */}
-              <a
-                href="/admin"
-                className="inline-flex items-center gap-1.5 border border-[#0D9488]/40 bg-[#0D9488]/10 hover:bg-[#0D9488] hover:text-white px-2.5 sm:px-3.5 py-1.5 font-mono text-[10px] sm:text-xs uppercase tracking-wider text-[#0D9488] transition-all font-bold rounded-lg cursor-pointer shadow-xs shrink-0"
-              >
-                <Key className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                <span className="hidden xs:inline">Admin</span>
-                <span className="hidden sm:inline">Panel</span>
-              </a>
-
               {/* Partner With Us Button (hidden on small mobile, visible on tablet and desktop) */}
               <a
                 href="#contact"
@@ -220,7 +209,6 @@ export default function Navbar() {
             {navItems.map((item) => {
               const id = item.href.replace("#", "");
               const isActive = activeSection === id;
-              const isAdmin = item.name === "Admin Panel";
               const isResearch = item.name === "Research Hub";
 
               return (
@@ -229,24 +217,17 @@ export default function Navbar() {
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
                   className={`flex items-center justify-between px-3.5 py-3 rounded-xl font-mono text-xs uppercase tracking-wider transition-colors cursor-pointer border ${
-                    isAdmin
-                      ? "bg-[#0D9488]/10 border-[#0D9488]/30 text-[#0D9488] font-bold my-2 shadow-xs"
-                      : isActive
+                    isActive
                       ? "bg-slate-100 border-slate-200 text-[#0D9488] font-bold"
                       : "bg-transparent border-transparent text-slate-700 hover:bg-slate-50 hover:border-slate-100 font-medium"
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    {isAdmin && <Key className="h-4 w-4 text-[#0D9488] shrink-0" />}
                     {isResearch && <span className="text-sky-600 font-bold">●</span>}
                     <span>{item.name}</span>
                   </div>
 
-                  {isAdmin ? (
-                    <span className="text-[9px] px-2 py-0.5 rounded-md bg-[#0D9488] text-white font-bold">
-                      PORTAL
-                    </span>
-                  ) : isActive ? (
+                  {isActive ? (
                     <span className="h-2 w-2 rounded-full bg-[#0D9488]" />
                   ) : (
                     <span className="text-slate-300 font-mono text-xs">→</span>
@@ -257,14 +238,6 @@ export default function Navbar() {
 
             {/* Quick Action Buttons & Footer Info */}
             <div className="pt-5 pb-8 space-y-3 border-t border-slate-100 mt-4">
-              <a
-                href="/admin"
-                className="flex items-center justify-center gap-2 border border-[#0D9488] bg-[#0D9488] text-white py-3 font-mono text-xs uppercase tracking-wider font-bold rounded-xl shadow-sm hover:bg-[#0F766E] transition-all"
-              >
-                <Key className="w-4 h-4" />
-                Enter Admin Portal
-              </a>
-
               <a
                 href="#contact"
                 onClick={(e) => handleNavClick(e, "#contact")}
