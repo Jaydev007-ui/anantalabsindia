@@ -111,16 +111,11 @@ export default function AdminPage() {
   const [editingPatent, setEditingPatent] = useState<PatentItem | null>(null);
   const [isNewPatent, setIsNewPatent] = useState(false);
 
-  // Auto-login from localStorage session
+  // Clear session on load to ensure passkey is asked every single time
   useEffect(() => {
     try {
-      const savedSession = localStorage.getItem("ananta_admin_session");
-      if (savedSession) {
-        const parsed = JSON.parse(savedSession);
-        if (parsed && parsed.passkey) {
-          setCurrentUser(parsed);
-        }
-      }
+      localStorage.removeItem("ananta_admin_session");
+      sessionStorage.removeItem("ananta_admin_session");
     } catch {}
   }, []);
 
@@ -172,7 +167,6 @@ export default function AdminPage() {
     // Check fixed master passkey for Jaydev Zala
     if (key === "9099093188") {
       setCurrentUser(JAYDEV_ADMIN);
-      localStorage.setItem("ananta_admin_session", JSON.stringify(JAYDEV_ADMIN));
       setPasskeyInput("");
       return;
     }
@@ -185,19 +179,21 @@ export default function AdminPage() {
         const found = json.data.find((m: TeamMember) => m.passkey === key);
         if (found) {
           setCurrentUser(found);
-          localStorage.setItem("ananta_admin_session", JSON.stringify(found));
           setPasskeyInput("");
           return;
         }
       }
     } catch {}
 
-    setLoginError("Invalid Passkey. Please verify your credentials or contact Jaydev Zala.");
+    setLoginError("Invalid Passkey. Please verify your clearance credentials.");
   };
 
   const handleLogout = () => {
     setCurrentUser(null);
-    localStorage.removeItem("ananta_admin_session");
+    try {
+      localStorage.removeItem("ananta_admin_session");
+      sessionStorage.removeItem("ananta_admin_session");
+    } catch {}
   };
 
   const triggerSuccessAlert = (msg: string) => {
@@ -620,7 +616,7 @@ export default function AdminPage() {
                   type="password"
                   value={passkeyInput}
                   onChange={(e) => setPasskeyInput(e.target.value)}
-                  placeholder="Enter passkey (e.g. 9099093188)"
+                  placeholder="Enter security passkey"
                   className="w-full px-4 py-3 rounded-xl bg-black/50 border border-white/10 text-white font-mono text-sm tracking-wider focus:border-[#7FBFA0] focus:ring-1 focus:ring-[#7FBFA0] focus:outline-none transition-all placeholder:text-slate-600"
                   autoFocus
                 />
@@ -648,13 +644,10 @@ export default function AdminPage() {
             </button>
           </form>
 
-          {/* Quick Notice */}
+          {/* Security Notice */}
           <div className="mt-8 pt-6 border-t border-white/5 text-center">
-            <p className="text-[11px] text-slate-500 font-mono">
-              Master Admin Passkey: <code className="text-[#7FBFA0] font-bold">9099093188</code> (Jaydev Zala)
-            </p>
-            <p className="text-[10px] text-slate-600 mt-1">
-              Team members must obtain clearance passkey from Jaydev Zala.
+            <p className="text-[10px] text-slate-500 font-mono">
+              Restricted Area. Authorized administrative credentials required for session access.
             </p>
           </div>
         </motion.div>
