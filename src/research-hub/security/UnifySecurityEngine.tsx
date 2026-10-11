@@ -95,6 +95,13 @@ export const UnifySecurityEngine: React.FC = () => {
       const isShift = e.shiftKey;
       const isAlt = e.altKey;
 
+      // Ctrl + Shift + A -> Open Research Hub Admin CMS
+      if (isCtrlOrCmd && isShift && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        window.location.href = '/research/admin';
+        return false;
+      }
+
       // F12 - DevTools
       if (e.key === 'F12' || e.keyCode === 123) {
         e.preventDefault();

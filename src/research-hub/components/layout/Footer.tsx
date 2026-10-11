@@ -167,10 +167,14 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal }) => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-xs font-mono text-slate-400 shrink-0 bg-white/5 px-3.5 py-2 rounded-xl border border-white/10">
+          <Link
+            to="/research/admin"
+            title="Admin CMS Portal"
+            className="flex items-center gap-2 text-xs font-mono text-slate-300 hover:text-white shrink-0 bg-white/5 hover:bg-white/10 px-3.5 py-2 rounded-xl border border-white/10 transition-colors cursor-pointer"
+          >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             <span>UNIFY Engine v3.4 Armed</span>
-          </div>
+          </Link>
         </div>
 
         {/* Transparency Disclosure */}

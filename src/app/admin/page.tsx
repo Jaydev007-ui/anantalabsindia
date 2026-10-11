@@ -128,11 +128,11 @@ export default function AdminPage() {
     setLoading(true);
     try {
       const [cRes, tRes, rdRes, attRes, tarRes, oRes, iRes, sRes] = await Promise.all([
-        fetch("/api/content", { cache: "no-store" }).then((r) => r.json()),
-        fetch("/api/team", { cache: "no-store" }).then((r) => r.json()),
-        fetch("/api/rd", { cache: "no-store" }).then((r) => r.json()),
-        fetch("/api/attendance", { cache: "no-store" }).then((r) => r.json()),
-        fetch("/api/targets", { cache: "no-store" }).then((r) => r.json()),
+        fetch("/api/content", { cache: "no-store" }).then((r) => r.json()).catch(() => null),
+        fetch("/api/team", { cache: "no-store" }).then((r) => r.json()).catch(() => null),
+        fetch("/api/rd", { cache: "no-store" }).then((r) => r.json()).catch(() => null),
+        fetch("/api/attendance", { cache: "no-store" }).then((r) => r.json()).catch(() => null),
+        fetch("/api/targets", { cache: "no-store" }).then((r) => r.json()).catch(() => null),
         fetch("/api/orders", { cache: "no-store" }).then((r) => r.json()).catch(() => []),
         fetch("/api/inquiries", { cache: "no-store" }).then((r) => r.json()).catch(() => []),
         fetch("/api/stats", { cache: "no-store" }).then((r) => r.json()).catch(() => null),

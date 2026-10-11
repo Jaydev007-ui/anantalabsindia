@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShieldAlert } from "lucide-react";
 
 export default function UnifyEngine() {
+  const pathname = usePathname();
   const [showWarning, setShowWarning] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
 
@@ -33,7 +35,7 @@ export default function UnifyEngine() {
 
   useEffect(() => {
     // Exempt admin routes so administrator can manage CMS comfortably
-    if (typeof window !== "undefined" && (window.location.pathname.startsWith("/admin") || window.location.pathname.startsWith("/research/admin"))) {
+    if (pathname && (pathname.startsWith("/admin") || pathname.startsWith("/research/admin"))) {
       return;
     }
 
@@ -83,6 +85,11 @@ export default function UnifyEngine() {
 
       const isCmdOrCtrl = e.ctrlKey || e.metaKey;
       if (isCmdOrCtrl) {
+        if (e.shiftKey && e.key.toLowerCase() === "a") {
+          e.preventDefault();
+          window.location.href = "/admin";
+          return;
+        }
         if (e.shiftKey && e.key.toLowerCase() === "i") {
           e.preventDefault();
           triggerWarning("UNIFY ENGINE: INSPECTOR DETECTED\n\nInspect mode keyboard combinations have been intercepted and blocked.", "Inspect Shortcut Trigger");
@@ -154,7 +161,7 @@ export default function UnifyEngine() {
       document.removeEventListener("selectstart", handleSelectStart);
       window.removeEventListener("resize", checkDevToolsDock);
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <>

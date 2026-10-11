@@ -47,9 +47,11 @@ export default function Footer() {
           </a>
         </div>
 
-        {/* Right: Technical Location Coordinates */}
+        {/* Right: Technical Location Coordinates & Discreet Admin Access */}
         <div className="font-mono text-[9px] text-slate-400 flex flex-col sm:flex-row items-center gap-1.5 sm:gap-4 text-center sm:text-right">
-          <span>LOC // VADODARA, GUJARAT, INDIA</span>
+          <a href="/admin" className="hover:text-[#0D9488] transition-colors cursor-pointer" title="Administrative Access">
+            LOC // VADODARA, GUJARAT, INDIA
+          </a>
           <span className="hidden sm:inline text-slate-300">/</span>
           <span className="text-[#B45309]">LAT: 22.3072° N // LON: 73.1812° E</span>
         </div>
