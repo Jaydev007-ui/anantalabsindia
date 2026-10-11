@@ -22,59 +22,59 @@ export default function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 150);
 
-      const sections = navItems
-        .filter((item) => item.href.startsWith("#"))
-        .map((item) => {
-          const id = item.href.replace("#", "");
-          return document.getElementById(id);
-        });
+      const anchorItems = navItems.filter((item) => item.href.startsWith("#"));
+      const sections = anchorItems.map((item) => {
+        const id = item.href.replace("#", "");
+        return document.getElementById(id);
+      });
 
-      const scrollPosition = window.scrollY + 120;
+      const scrollPosition = window.scrollY + 140;
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = sections[i];
         if (section) {
-          const sectionTop = window.scrollY + section.getBoundingClientRect().top;
+          const sectionTop = section.getBoundingClientRect().top + window.scrollY;
           if (sectionTop <= scrollPosition) {
-            const anchorItems = navItems.filter((item) => item.href.startsWith("#"));
-            if (anchorItems[i]) {
-              setActiveSection(anchorItems[i].href.replace("#", ""));
-            }
+            setActiveSection(anchorItems[i].href.replace("#", ""));
             break;
           }
         }
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    setMobileMenuOpen(false);
+
     if (!href.startsWith("#")) {
-      setMobileMenuOpen(false);
+      // Normal browser navigation for /research or external paths
       return;
     }
+
     e.preventDefault();
-    setMobileMenuOpen(false);
-    
     const targetId = href.replace("#", "");
     const targetElement = document.getElementById(targetId);
-    
+
     if (targetElement) {
-      const targetPosition = window.scrollY + targetElement.getBoundingClientRect().top - 80;
+      const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - 80;
       window.scrollTo({
         top: targetPosition,
         behavior: "smooth",
       });
+      window.history.pushState(null, "", href);
+    } else {
+      window.location.href = `/${href}`;
     }
   };
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-45 transition-all duration-300 border-b border-transparent ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent ${
         isScrolled
-          ? "bg-[#07090A] border-white/5 py-3 shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
+          ? "bg-[#07090A]/95 backdrop-blur-md border-white/5 py-3 shadow-[0_4px_30px_rgba(0,0,0,0.4)]"
           : "bg-transparent py-5"
       }`}
     >
@@ -82,7 +82,11 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           
           {/* Logo with /logo.jpg */}
-          <a href="#home" onClick={(e) => handleNavClick(e, "#home")} className="group flex items-center gap-3">
+          <a
+            href="#home"
+            onClick={(e) => handleNavClick(e, "#home")}
+            className="group flex items-center gap-3 cursor-pointer"
+          >
             <div className="relative flex h-10 w-10 items-center justify-center border border-white/10 bg-[#0E1213] overflow-hidden transition-all group-hover:border-[#7FBFA0] rounded-none">
               <img
                 src="/logo.jpg?v=2"
@@ -110,7 +114,7 @@ export default function Navbar() {
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className={`nav-link-underline font-mono text-[10px] uppercase tracking-widest transition-colors pb-1 ${
+                  className={`nav-link-underline font-mono text-[10px] uppercase tracking-widest transition-colors pb-1 cursor-pointer ${
                     isActive ? "text-[#7FBFA0] font-medium" : "text-[#8A9792] hover:text-[#E8EDE9]"
                   }`}
                 >
@@ -125,7 +129,7 @@ export default function Navbar() {
             <a
               href="#contact"
               onClick={(e) => handleNavClick(e, "#contact")}
-              className="inline-flex items-center justify-center border border-[#7FBFA0] bg-transparent hover:bg-[#7FBFA0] hover:text-[#07090A] px-5 py-2 font-mono text-[10px] uppercase tracking-widest text-[#7FBFA0] transition-all rounded-none"
+              className="inline-flex items-center justify-center border border-[#7FBFA0] bg-transparent hover:bg-[#7FBFA0] hover:text-[#07090A] px-5 py-2 font-mono text-[10px] uppercase tracking-widest text-[#7FBFA0] transition-all rounded-none cursor-pointer"
             >
               Partner With Us
             </a>
@@ -134,8 +138,9 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <div className="min-[901px]:hidden flex items-center">
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="flex h-10 w-10 items-center justify-center border border-white/10 bg-[#0E1213] text-[#8A9792] hover:text-[#E8EDE9] rounded-none focus:outline-none"
+              type="button"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              className="flex h-10 w-10 items-center justify-center border border-white/10 bg-[#0E1213] text-[#8A9792] hover:text-[#E8EDE9] rounded-none focus:outline-none cursor-pointer"
               aria-label="Toggle Menu"
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -146,8 +151,10 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed inset-0 top-[65px] bg-[#07090A] z-40 transition-transform duration-300 min-[901px]:hidden border-t border-white/5 flex flex-col justify-between p-8 ${
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed inset-0 top-[65px] bg-[#07090A] z-[60] transition-all duration-300 min-[901px]:hidden border-t border-white/5 flex flex-col justify-between p-8 ${
+          mobileMenuOpen
+            ? "translate-x-0 opacity-100 pointer-events-auto visible"
+            : "translate-x-full opacity-0 pointer-events-none invisible"
         }`}
       >
         <nav className="flex flex-col gap-6">
@@ -159,7 +166,7 @@ export default function Navbar() {
                 key={item.name}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className={`font-mono text-xs uppercase tracking-widest py-3 border-b border-white/5 flex items-center justify-between transition-colors ${
+                className={`font-mono text-xs uppercase tracking-widest py-3 border-b border-white/5 flex items-center justify-between transition-colors cursor-pointer ${
                   isActive ? "text-[#7FBFA0] font-bold" : "text-[#8A9792]"
                 }`}
               >
@@ -174,7 +181,7 @@ export default function Navbar() {
           <a
             href="#contact"
             onClick={(e) => handleNavClick(e, "#contact")}
-            className="flex items-center justify-center border border-[#7FBFA0] bg-[#7FBFA0] py-3.5 font-mono text-[11px] uppercase tracking-widest text-[#07090A] hover:bg-transparent hover:text-[#7FBFA0] transition-all rounded-none"
+            className="flex items-center justify-center border border-[#7FBFA0] bg-[#7FBFA0] py-3.5 font-mono text-[11px] uppercase tracking-widest text-[#07090A] hover:bg-transparent hover:text-[#7FBFA0] transition-all rounded-none cursor-pointer"
           >
             Partner With Us
           </a>

@@ -164,7 +164,7 @@ export default function FlagshipSystems() {
         {/* Case Study A: Spitting Detection */}
         <div
           ref={spitRef}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start opacity-0"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start"
         >
           {/* Left Column: Pipeline & Info */}
           <div className="lg:col-span-6 space-y-6">
@@ -264,7 +264,7 @@ export default function FlagshipSystems() {
         {/* Case Study B: AyurAI Veda */}
         <div
           ref={vedaRef}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start opacity-0"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start"
         >
           {/* Left Column: Pipeline & Info */}
           <div className="lg:col-span-6 space-y-6">

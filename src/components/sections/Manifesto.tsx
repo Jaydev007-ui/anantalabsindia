@@ -38,7 +38,7 @@ export default function Manifesto() {
     <section
       id="manifesto"
       ref={sectionRef}
-      className="relative py-24 border-t border-white/5 bg-transparent overflow-hidden opacity-0"
+      className="relative py-24 border-t border-white/5 bg-transparent overflow-hidden"
     >
       <div className="absolute left-6 md:left-8 top-0 bottom-0 w-[1px] bg-white/5 pointer-events-none" />
       <div className="absolute right-6 md:right-8 top-0 bottom-0 w-[1px] bg-white/5 pointer-events-none" />

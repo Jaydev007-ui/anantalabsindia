@@ -25,7 +25,6 @@ const eslintConfig = defineConfig([
     "build/**",
     "dist/**",
     "next-env.d.ts",
-    "Ananta Resarch hub/**",
     "src/research-hub/**",
     "node_modules/**",
   ]),

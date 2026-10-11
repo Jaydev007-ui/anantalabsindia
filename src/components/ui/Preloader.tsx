@@ -15,42 +15,58 @@ export default function Preloader({ onComplete }: PreloaderProps) {
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    const finish = () => {
+      if (containerRef.current) {
+        containerRef.current.style.pointerEvents = "none";
+      }
+      gsap.to(containerRef.current, {
+        opacity: 0,
+        duration: 0.35,
+        ease: "power2.inOut",
+        onComplete: () => {
+          if (containerRef.current) {
+            containerRef.current.style.display = "none";
+          }
+          if (onComplete) onComplete();
+        },
+      });
+    };
+
     if (prefersReducedMotion) {
       setProgress(100);
-      if (onComplete) onComplete();
+      finish();
       return;
     }
 
     const obj = { value: 0 };
     const tl = gsap.timeline({
-      onComplete: () => {
-        gsap.to(containerRef.current, {
-          opacity: 0,
-          duration: 0.5,
-          ease: "power2.inOut",
-          onComplete: () => {
-            if (onComplete) onComplete();
-          }
-        });
-      }
+      onComplete: finish,
     });
 
     tl.to(obj, {
       value: 100,
-      duration: 2.0,
+      duration: 1.2,
       ease: "power2.out",
       onUpdate: () => {
         setProgress(Math.floor(obj.value));
-      }
+      },
     });
 
-    gsap.fromTo(
-      wordmarkRef.current,
-      { opacity: 0, y: 10 },
-      { opacity: 1, y: 0, duration: 1.0, ease: "power2.out" }
-    );
+    if (wordmarkRef.current) {
+      gsap.fromTo(
+        wordmarkRef.current,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+      );
+    }
+
+    // Safety timeout ensures user is NEVER blocked if GSAP stalls
+    const timer = setTimeout(() => {
+      finish();
+    }, 1800);
 
     return () => {
+      clearTimeout(timer);
       tl.kill();
     };
   }, [onComplete]);
@@ -58,7 +74,8 @@ export default function Preloader({ onComplete }: PreloaderProps) {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#07090A] grid-noise-bg font-mono select-none"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#07090A] grid-noise-bg font-mono select-none transition-opacity"
+      style={{ pointerEvents: "auto" }}
     >
       <div className="w-full max-w-xs px-6 flex flex-col items-start gap-3">
         {/* Wordmark */}
@@ -75,7 +92,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         {/* Progress bar */}
         <div className="w-full h-[1px] bg-white/10 relative overflow-hidden">
           <div
-            className="absolute top-0 left-0 h-full bg-[#7FBFA0]"
+            className="absolute top-0 left-0 h-full bg-[#7FBFA0] transition-all duration-75"
             style={{ width: `${progress}%` }}
           />
         </div>

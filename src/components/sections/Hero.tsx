@@ -24,35 +24,35 @@ export default function Hero() {
       return;
     }
 
-    const tl = gsap.timeline({ delay: 0.2 });
+    const tl = gsap.timeline({ delay: 0.1 });
 
     tl.fromTo(
       eyebrowRef.current,
       { y: 15, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }
+      { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }
     )
     .fromTo(
       [titleLine1Ref.current, titleLine2Ref.current],
       { y: "105%" },
-      { y: "0%", duration: 0.8, stagger: 0.15, ease: "power3.out" },
-      "-=0.3"
+      { y: "0%", duration: 0.7, stagger: 0.12, ease: "power3.out" },
+      "-=0.2"
     )
     .fromTo(
       subheadRef.current,
       { y: 15, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
-      "-=0.4"
+      { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+      "-=0.3"
     )
     .fromTo(
       ctaRef.current,
       { y: 15, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
-      "-=0.4"
+      { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+      "-=0.3"
     )
     .fromTo(
       scrollCueRef.current,
       { opacity: 0 },
-      { opacity: 1, duration: 0.8, ease: "power2.out" },
+      { opacity: 1, duration: 0.6, ease: "power2.out" },
       "-=0.2"
     );
 
@@ -71,11 +71,12 @@ export default function Hero() {
   const handleScrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      const targetPosition = window.scrollY + el.getBoundingClientRect().top - 80;
+      const targetPosition = el.getBoundingClientRect().top + window.scrollY - 80;
       window.scrollTo({
         top: targetPosition,
         behavior: "smooth",
       });
+      window.history.pushState(null, "", `#${id}`);
     }
   };
 
@@ -94,7 +95,7 @@ export default function Hero() {
           {/* Eyebrow */}
           <div
             ref={eyebrowRef}
-            className="font-mono text-xs uppercase tracking-widest text-[#C98A4B] opacity-0"
+            className="font-mono text-xs uppercase tracking-widest text-[#C98A4B]"
           >
             Deep-Tech R&D · Vadodara, Gujarat, India
           </div>
@@ -116,7 +117,7 @@ export default function Hero() {
           {/* Subheadline */}
           <p
             ref={subheadRef}
-            className="font-sans text-[#8A9792] text-base sm:text-lg max-w-2xl leading-relaxed opacity-0"
+            className="font-sans text-[#8A9792] text-base sm:text-lg max-w-2xl leading-relaxed"
           >
             Developing state-of-the-art computer vision models, medical diagnostics hardware, and automated manufacturing pipelines for industry and academia.
           </p>
@@ -124,15 +125,17 @@ export default function Hero() {
           {/* CTAs */}
           <div
             ref={ctaRef}
-            className="flex flex-col sm:flex-row gap-4 pt-4 opacity-0"
+            className="flex flex-col sm:flex-row gap-4 pt-4"
           >
             <button
+              type="button"
               onClick={() => handleScrollTo("flagship-systems")}
               className="inline-flex items-center justify-center border border-[#7FBFA0] bg-[#7FBFA0] text-[#07090A] hover:bg-transparent hover:text-[#7FBFA0] px-8 py-3.5 font-mono text-xs uppercase tracking-widest transition-all duration-300 rounded-none cursor-pointer"
             >
               View Flagship Systems
             </button>
             <button
+              type="button"
               onClick={() => handleScrollTo("patents")}
               className="inline-flex items-center justify-center border border-white/10 bg-transparent hover:border-[#C98A4B] hover:text-[#C98A4B] px-8 py-3.5 font-mono text-xs uppercase tracking-widest text-[#8A9792] transition-all duration-300 rounded-none cursor-pointer"
             >
@@ -147,7 +150,7 @@ export default function Hero() {
         <div
           ref={scrollCueRef}
           onClick={() => handleScrollTo("manifesto")}
-          className="group inline-flex items-center gap-3 font-mono text-[9px] uppercase tracking-widest text-[#8A9792] hover:text-[#7FBFA0] transition-colors cursor-pointer select-none opacity-0"
+          className="group inline-flex items-center gap-3 font-mono text-[9px] uppercase tracking-widest text-[#8A9792] hover:text-[#7FBFA0] transition-colors cursor-pointer select-none"
         >
           <span className="w-3 h-3 flex items-center justify-center border border-[#8A9792] group-hover:border-[#7FBFA0] transition-colors rounded-none text-[8px] font-bold">
             ↓

@@ -3,8 +3,6 @@
 # dependencies
 node_modules/
 /node_modules
-Ananta Resarch hub/dist/
-Ananta Resarch hub/node_modules/
 /.pnp
 .pnp.*
 .yarn/*
