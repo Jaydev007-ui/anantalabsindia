@@ -16,11 +16,20 @@ export default function Hero() {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (prefersReducedMotion) {
-      // Set all elements to their final states instantly
-      gsap.set([eyebrowRef.current, titleLine1Ref.current, titleLine2Ref.current, subheadRef.current, ctaRef.current, scrollCueRef.current], {
-        y: 0,
-        opacity: 1
-      });
+      gsap.set(
+        [
+          eyebrowRef.current,
+          titleLine1Ref.current,
+          titleLine2Ref.current,
+          subheadRef.current,
+          ctaRef.current,
+          scrollCueRef.current,
+        ],
+        {
+          y: 0,
+          opacity: 1,
+        }
+      );
       return;
     }
 
@@ -31,41 +40,38 @@ export default function Hero() {
       { y: 15, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }
     )
-    .fromTo(
-      [titleLine1Ref.current, titleLine2Ref.current],
-      { y: "105%" },
-      { y: "0%", duration: 0.7, stagger: 0.12, ease: "power3.out" },
-      "-=0.2"
-    )
-    .fromTo(
-      subheadRef.current,
-      { y: 15, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
-      "-=0.3"
-    )
-    .fromTo(
-      ctaRef.current,
-      { y: 15, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
-      "-=0.3"
-    )
-    .fromTo(
-      scrollCueRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.6, ease: "power2.out" },
-      "-=0.2"
-    );
+      .fromTo(
+        [titleLine1Ref.current, titleLine2Ref.current],
+        { y: "105%" },
+        { y: "0%", duration: 0.7, stagger: 0.12, ease: "power3.out" },
+        "-=0.2"
+      )
+      .fromTo(
+        subheadRef.current,
+        { y: 15, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+        "-=0.3"
+      )
+      .fromTo(
+        ctaRef.current,
+        { y: 15, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+        "-=0.3"
+      )
+      .fromTo(
+        scrollCueRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.6, ease: "power2.out" },
+        "-=0.2"
+      );
 
-    // Minor hover and infinite cues
-    gsap.fromTo(
-      scrollCueRef.current,
-      { y: 0 },
-      { y: 6, duration: 1.0, repeat: -1, yoyo: true, ease: "power1.inOut" }
-    );
-
-    return () => {
-      tl.kill();
-    };
+    if (scrollCueRef.current) {
+      gsap.fromTo(
+        scrollCueRef.current.querySelector("span:first-child"),
+        { y: 0 },
+        { y: 4, duration: 1.5, repeat: -1, yoyo: true, ease: "power1.inOut" }
+      );
+    }
   }, []);
 
   const handleScrollTo = (id: string) => {
@@ -84,30 +90,31 @@ export default function Hero() {
     <section
       id="home"
       ref={containerRef}
-      className="relative min-h-screen flex flex-col justify-between pt-32 pb-16 bg-transparent overflow-hidden"
+      className="relative min-h-[90dvh] sm:min-h-screen flex flex-col justify-between pt-24 sm:pt-32 pb-12 sm:pb-16 bg-transparent overflow-hidden"
     >
-      {/* Decorative vertical lines on sides to enhance lab instrument feel */}
-      <div className="absolute left-6 md:left-8 top-32 bottom-16 w-[1px] bg-slate-200 pointer-events-none" />
-      <div className="absolute right-6 md:right-8 top-32 bottom-16 w-[1px] bg-slate-200 pointer-events-none" />
+      {/* Decorative vertical lines on sides (hidden on mobile, visible on desktop) */}
+      <div className="hidden md:block absolute left-4 md:left-8 top-32 bottom-16 w-[1px] bg-slate-200 pointer-events-none" />
+      <div className="hidden md:block absolute right-4 md:right-8 top-32 bottom-16 w-[1px] bg-slate-200 pointer-events-none" />
 
-      <div className="flex-1 flex items-center w-full max-w-7xl mx-auto px-8 md:px-12 z-10">
-        <div className="max-w-4xl space-y-8">
+      <div className="flex-1 flex items-center w-full max-w-7xl mx-auto px-4 sm:px-8 md:px-12 z-10 py-6 sm:py-0">
+        <div className="max-w-4xl space-y-6 sm:space-y-8">
           {/* Eyebrow */}
           <div
             ref={eyebrowRef}
-            className="font-mono text-xs uppercase tracking-widest text-[#B45309] font-semibold"
+            className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-[#B45309] font-semibold flex items-center gap-2"
           >
-            Deep-Tech R&D · Vadodara, Gujarat, India
+            <span className="w-2 h-2 rounded-full bg-[#B45309] animate-pulse" />
+            <span>Deep-Tech R&D · Vadodara, Gujarat, India</span>
           </div>
 
           {/* Masked Headline */}
-          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-slate-900 leading-[1.1] sm:leading-[1.05] uppercase">
-            <span className="block overflow-hidden pb-1 sm:pb-2">
+          <h1 className="font-display text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 leading-[1.15] sm:leading-[1.05] uppercase break-words">
+            <span className="block overflow-hidden pb-1">
               <span ref={titleLine1Ref} className="block">
                 Engineering intelligence
               </span>
             </span>
-            <span className="block overflow-hidden pb-1 sm:pb-2 text-[#0D9488]">
+            <span className="block overflow-hidden pb-1 text-[#0D9488]">
               <span ref={titleLine2Ref} className="block">
                 for real-world systems.
               </span>
@@ -117,34 +124,34 @@ export default function Hero() {
           {/* Subheadline */}
           <p
             ref={subheadRef}
-            className="font-sans text-slate-600 text-base sm:text-lg max-w-2xl leading-relaxed font-normal"
+            className="font-sans text-slate-600 text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed font-normal"
           >
             Developing state-of-the-art computer vision models, medical diagnostics hardware, and automated manufacturing pipelines for industry and academia.
           </p>
 
-          {/* CTAs */}
+          {/* Responsive CTAs (full width on small phones, auto on tablet/desktop) */}
           <div
             ref={ctaRef}
-            className="flex flex-col sm:flex-row gap-4 pt-4"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-4"
           >
             <button
               type="button"
               onClick={() => handleScrollTo("flagship-systems")}
-              className="inline-flex items-center justify-center border border-[#0D9488] bg-[#0D9488] text-white hover:bg-[#0F766E] px-8 py-3.5 font-mono text-xs uppercase tracking-widest transition-all duration-300 rounded-xl cursor-pointer shadow-sm"
+              className="w-full sm:w-auto inline-flex items-center justify-center border border-[#0D9488] bg-[#0D9488] text-white hover:bg-[#0F766E] px-6 sm:px-8 py-3 sm:py-3.5 font-mono text-xs uppercase tracking-widest transition-all duration-300 rounded-xl cursor-pointer shadow-xs font-semibold text-center"
             >
               View Flagship Systems
             </button>
             <button
               type="button"
               onClick={() => handleScrollTo("store")}
-              className="inline-flex items-center justify-center border border-slate-300 bg-white hover:border-[#0D9488] hover:text-[#0D9488] px-8 py-3.5 font-mono text-xs uppercase tracking-widest text-slate-700 transition-all duration-300 rounded-xl cursor-pointer shadow-xs"
+              className="w-full sm:w-auto inline-flex items-center justify-center border border-slate-300 bg-white hover:border-[#0D9488] hover:text-[#0D9488] px-6 sm:px-8 py-3 sm:py-3.5 font-mono text-xs uppercase tracking-widest text-slate-700 transition-all duration-300 rounded-xl cursor-pointer shadow-xs text-center"
             >
               Hardware Store
             </button>
             <button
               type="button"
               onClick={() => handleScrollTo("patents")}
-              className="inline-flex items-center justify-center border border-slate-200 bg-slate-50 hover:border-[#B45309] hover:text-[#B45309] px-6 py-3.5 font-mono text-xs uppercase tracking-widest text-slate-600 transition-all duration-300 rounded-xl cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center border border-slate-200 bg-slate-50 hover:border-[#B45309] hover:text-[#B45309] px-5 sm:px-6 py-3 sm:py-3.5 font-mono text-xs uppercase tracking-widest text-slate-600 transition-all duration-300 rounded-xl cursor-pointer text-center"
             >
               Patents & IP
             </button>
@@ -153,11 +160,11 @@ export default function Hero() {
       </div>
 
       {/* Bottom section with scroll cue */}
-      <div className="w-full max-w-7xl mx-auto px-8 md:px-12 z-10 flex items-end">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 md:px-12 z-10 flex items-end">
         <div
           ref={scrollCueRef}
           onClick={() => handleScrollTo("manifesto")}
-          className="group inline-flex items-center gap-3 font-mono text-[9px] uppercase tracking-widest text-slate-500 hover:text-[#0D9488] transition-colors cursor-pointer select-none"
+          className="group inline-flex items-center gap-2 sm:gap-3 font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-slate-500 hover:text-[#0D9488] transition-colors cursor-pointer select-none"
         >
           <span className="w-4 h-4 flex items-center justify-center border border-slate-300 group-hover:border-[#0D9488] transition-colors rounded-full text-[9px] font-bold">
             ↓

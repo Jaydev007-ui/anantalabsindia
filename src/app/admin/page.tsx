@@ -663,21 +663,21 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-[#07090A] text-slate-200 selection:bg-[#7FBFA0]/20 selection:text-white flex flex-col">
       {/* Top Navigation Bar */}
-      <header className="border-b border-white/10 bg-[#0A0D0F]/90 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-8 py-3.5 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-9 h-9 rounded-lg border border-[#7FBFA0]/40 bg-[#7FBFA0]/10 flex items-center justify-center text-[#7FBFA0]">
-            <Cpu className="w-5 h-5" />
+      <header className="border-b border-white/10 bg-[#0A0D0F]/90 backdrop-blur-md sticky top-0 z-40 px-3 sm:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg border border-[#7FBFA0]/40 bg-[#7FBFA0]/10 flex items-center justify-center text-[#7FBFA0] shrink-0">
+            <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-display font-bold text-sm tracking-widest text-white uppercase">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="font-display font-bold text-xs sm:text-sm tracking-widest text-white uppercase truncate">
                 ANANTA LABS
               </span>
-              <span className="px-2 py-0.5 rounded-full text-[9px] font-mono bg-[#7FBFA0]/20 text-[#7FBFA0] border border-[#7FBFA0]/40 font-bold uppercase">
+              <span className="px-1.5 sm:px-2 py-0.5 rounded-full text-[8px] sm:text-[9px] font-mono bg-[#7FBFA0]/20 text-[#7FBFA0] border border-[#7FBFA0]/40 font-bold uppercase shrink-0">
                 ADMIN CONSOLE
               </span>
             </div>
-            <div className="text-[10px] font-mono text-slate-400">
+            <div className="text-[9px] sm:text-[10px] font-mono text-slate-400 truncate max-w-[200px] xs:max-w-xs sm:max-w-none">
               Session: <strong className="text-white">{currentUser.name}</strong> •{" "}
               <span className="text-[#7FBFA0]">{currentUser.role}</span> ({currentUser.department})
             </div>
@@ -685,13 +685,13 @@ export default function AdminPage() {
         </div>
 
         {/* Top Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <button
             onClick={loadAllData}
             title="Refresh All Records"
-            className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            className="p-1.5 sm:p-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin text-[#7FBFA0]" : ""}`} />
+            <RefreshCw className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${loading ? "animate-spin text-[#7FBFA0]" : ""}`} />
           </button>
           <a
             href="/"
@@ -703,9 +703,9 @@ export default function AdminPage() {
           </a>
           <button
             onClick={handleLogout}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 text-xs font-mono transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 text-[11px] sm:text-xs font-mono transition-colors cursor-pointer"
           >
-            <LogOut className="w-3.5 h-3.5" />
+            <LogOut className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             Logout
           </button>
         </div>
@@ -718,10 +718,10 @@ export default function AdminPage() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-16 right-6 z-50 px-4 py-3 rounded-xl bg-[#7FBFA0] text-black text-xs font-bold shadow-2xl flex items-center gap-2"
+            className="fixed top-14 sm:top-16 right-4 sm:right-6 z-50 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-[#7FBFA0] text-black text-xs font-bold shadow-2xl flex items-center gap-2 max-w-[90vw]"
           >
-            <CheckCircle2 className="w-4 h-4" />
-            <span>{actionSuccess}</span>
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <span className="truncate">{actionSuccess}</span>
           </motion.div>
         )}
       </AnimatePresence>
@@ -729,14 +729,14 @@ export default function AdminPage() {
       {/* Main Container */}
       <div className="flex-1 flex flex-col lg:flex-row">
         {/* Sidebar Nav */}
-        <aside className="w-full lg:w-64 border-b lg:border-b-0 lg:border-r border-white/10 bg-[#090C0E] p-4 flex flex-row lg:flex-col gap-1 overflow-x-auto lg:overflow-visible shrink-0">
+        <aside className="w-full lg:w-64 border-b lg:border-b-0 lg:border-r border-white/10 bg-[#090C0E] p-2.5 sm:p-4 flex flex-row lg:flex-col gap-1.5 sm:gap-1 overflow-x-auto lg:overflow-visible shrink-0 no-scrollbar">
           <div className="hidden lg:block text-[10px] font-mono uppercase tracking-wider text-slate-500 px-3 py-2">
             Site Content & Systems
           </div>
 
           <button
             onClick={() => setActiveTab("store")}
-            className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap ${
+            className={`flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap shrink-0 ${
               activeTab === "store"
                 ? "bg-[#7FBFA0] text-black font-bold shadow-md shadow-[#7FBFA0]/20"
                 : "text-slate-400 hover:text-white hover:bg-white/5"
@@ -744,14 +744,14 @@ export default function AdminPage() {
           >
             <ShoppingBag className="w-4 h-4 shrink-0" />
             <span>Store Products</span>
-            <span className="ml-auto text-[10px] font-mono opacity-80">
-              {siteContent.store?.products?.length || 0}
+            <span className="ml-1 sm:ml-auto text-[10px] font-mono opacity-80">
+              ({siteContent.store?.products?.length || 0})
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab("patents")}
-            className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap ${
+            className={`flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap shrink-0 ${
               activeTab === "patents"
                 ? "bg-[#7FBFA0] text-black font-bold shadow-md shadow-[#7FBFA0]/20"
                 : "text-slate-400 hover:text-white hover:bg-white/5"
@@ -759,14 +759,14 @@ export default function AdminPage() {
           >
             <ShieldCheck className="w-4 h-4 shrink-0" />
             <span>Patents & IP</span>
-            <span className="ml-auto text-[10px] font-mono opacity-80">
-              {siteContent.patents?.items?.length || 0}
+            <span className="ml-1 sm:ml-auto text-[10px] font-mono opacity-80">
+              ({siteContent.patents?.items?.length || 0})
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab("flagship")}
-            className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap ${
+            className={`flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap shrink-0 ${
               activeTab === "flagship"
                 ? "bg-[#7FBFA0] text-black font-bold shadow-md shadow-[#7FBFA0]/20"
                 : "text-slate-400 hover:text-white hover:bg-white/5"
@@ -778,7 +778,7 @@ export default function AdminPage() {
 
           <button
             onClick={() => setActiveTab("manifesto")}
-            className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap ${
+            className={`flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap shrink-0 ${
               activeTab === "manifesto"
                 ? "bg-[#7FBFA0] text-black font-bold shadow-md shadow-[#7FBFA0]/20"
                 : "text-slate-400 hover:text-white hover:bg-white/5"
@@ -790,7 +790,7 @@ export default function AdminPage() {
 
           <button
             onClick={() => setActiveTab("orders")}
-            className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap ${
+            className={`flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap shrink-0 ${
               activeTab === "orders"
                 ? "bg-[#7FBFA0] text-black font-bold shadow-md shadow-[#7FBFA0]/20"
                 : "text-slate-400 hover:text-white hover:bg-white/5"
@@ -798,7 +798,7 @@ export default function AdminPage() {
           >
             <Package className="w-4 h-4 shrink-0" />
             <span>Orders & Inquiries</span>
-            <span className="ml-auto text-[10px] font-mono opacity-80">{orders.length}</span>
+            <span className="ml-1 sm:ml-auto text-[10px] font-mono opacity-80">({orders.length})</span>
           </button>
 
           <div className="hidden lg:block text-[10px] font-mono uppercase tracking-wider text-slate-500 px-3 pt-6 pb-2">
@@ -807,7 +807,7 @@ export default function AdminPage() {
 
           <button
             onClick={() => setActiveTab("team")}
-            className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap ${
+            className={`flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap shrink-0 ${
               activeTab === "team"
                 ? "bg-[#7FBFA0] text-black font-bold shadow-md shadow-[#7FBFA0]/20"
                 : "text-slate-400 hover:text-white hover:bg-white/5"
@@ -815,12 +815,12 @@ export default function AdminPage() {
           >
             <Users className="w-4 h-4 shrink-0" />
             <span>Team & Passkeys</span>
-            <span className="ml-auto text-[10px] font-mono opacity-80">{teamMembers.length}</span>
+            <span className="ml-1 sm:ml-auto text-[10px] font-mono opacity-80">({teamMembers.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab("rd")}
-            className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap ${
+            className={`flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap shrink-0 ${
               activeTab === "rd"
                 ? "bg-[#7FBFA0] text-black font-bold shadow-md shadow-[#7FBFA0]/20"
                 : "text-slate-400 hover:text-white hover:bg-white/5"
@@ -828,12 +828,12 @@ export default function AdminPage() {
           >
             <FileCode className="w-4 h-4 shrink-0" />
             <span>Internal R&D</span>
-            <span className="ml-auto text-[10px] font-mono opacity-80">{rdItems.length}</span>
+            <span className="ml-1 sm:ml-auto text-[10px] font-mono opacity-80">({rdItems.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab("attendance")}
-            className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap ${
+            className={`flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap shrink-0 ${
               activeTab === "attendance"
                 ? "bg-[#7FBFA0] text-black font-bold shadow-md shadow-[#7FBFA0]/20"
                 : "text-slate-400 hover:text-white hover:bg-white/5"
@@ -845,7 +845,7 @@ export default function AdminPage() {
 
           <button
             onClick={() => setActiveTab("targets")}
-            className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap ${
+            className={`flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap shrink-0 ${
               activeTab === "targets"
                 ? "bg-[#7FBFA0] text-black font-bold shadow-md shadow-[#7FBFA0]/20"
                 : "text-slate-400 hover:text-white hover:bg-white/5"
@@ -853,12 +853,12 @@ export default function AdminPage() {
           >
             <Target className="w-4 h-4 shrink-0" />
             <span>Targets & Tasks</span>
-            <span className="ml-auto text-[10px] font-mono opacity-80">{targets.length}</span>
+            <span className="ml-1 sm:ml-auto text-[10px] font-mono opacity-80">({targets.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab("analytics")}
-            className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap ${
+            className={`flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap shrink-0 ${
               activeTab === "analytics"
                 ? "bg-[#7FBFA0] text-black font-bold shadow-md shadow-[#7FBFA0]/20"
                 : "text-slate-400 hover:text-white hover:bg-white/5"
@@ -2135,7 +2135,7 @@ export default function AdminPage() {
                 </h3>
 
                 <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#0E1213]">
-                  <table className="w-full text-left text-xs">
+                  <table className="w-full min-w-[650px] text-left text-xs">
                     <thead className="bg-white/5 border-b border-white/10 font-mono text-slate-400">
                       <tr>
                         <th className="p-3.5">Admin Name</th>
@@ -2196,12 +2196,12 @@ export default function AdminPage() {
       {/* ==================================================== */}
       <AnimatePresence>
         {editingProduct && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-lg rounded-2xl border border-white/10 bg-[#0C0F12] p-6 shadow-2xl max-h-[90vh] overflow-y-auto"
+              className="relative w-full max-w-lg rounded-2xl border border-white/10 bg-[#0C0F12] p-5 sm:p-6 shadow-2xl max-h-[90dvh] overflow-y-auto my-auto"
             >
               <h3 className="text-lg font-bold text-white font-display mb-4">
                 {isNewProduct ? "Add New Hardware Product" : "Edit Hardware Product"}
@@ -2314,12 +2314,12 @@ export default function AdminPage() {
       {/* ==================================================== */}
       <AnimatePresence>
         {editingPatent && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-lg rounded-2xl border border-white/10 bg-[#0C0F12] p-6 shadow-2xl"
+              className="relative w-full max-w-lg rounded-2xl border border-white/10 bg-[#0C0F12] p-5 sm:p-6 shadow-2xl max-h-[90dvh] overflow-y-auto my-auto"
             >
               <h3 className="text-lg font-bold text-white font-display mb-4">
                 {isNewPatent ? "Add New Patent Seal" : "Edit Patent Seal"}
@@ -2408,12 +2408,12 @@ export default function AdminPage() {
       {/* ==================================================== */}
       <AnimatePresence>
         {completingTarget && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-lg rounded-2xl border border-white/10 bg-[#0C0F12] p-6 shadow-2xl"
+              className="relative w-full max-w-lg rounded-2xl border border-white/10 bg-[#0C0F12] p-5 sm:p-6 shadow-2xl max-h-[90dvh] overflow-y-auto my-auto"
             >
               <h3 className="text-lg font-bold text-white font-display mb-2">Complete Target Milestone</h3>
               <p className="text-xs text-slate-400 mb-4">

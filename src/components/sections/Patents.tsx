@@ -77,25 +77,25 @@ export default function Patents() {
     <section
       id="patents"
       ref={containerRef}
-      className="relative py-24 border-t border-slate-200 bg-transparent overflow-hidden"
+      className="relative py-16 sm:py-24 border-t border-slate-200 bg-transparent overflow-hidden"
     >
-      <div className="absolute left-6 md:left-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
-      <div className="absolute right-6 md:right-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
+      <div className="hidden md:block absolute left-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
+      <div className="hidden md:block absolute right-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-12 w-full">
         
         {/* Section Header */}
-        <div className="flex items-center gap-4 mb-16">
+        <div className="flex items-center gap-4 mb-10 sm:mb-16">
           <span className="font-mono text-xs text-[#B45309] font-semibold">{sectionTag}</span>
           <div className="h-[1px] flex-1 bg-slate-200" />
         </div>
 
         {/* Seals Row Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {patentItems.map((seal) => (
             <div
               key={seal.id}
-              className="border border-slate-200 bg-white p-6 relative flex flex-col justify-between min-h-[340px] rounded-2xl hover:border-[#B45309] transition-all duration-300 group shadow-sm hover:shadow-md"
+              className="border border-slate-200 bg-white p-5 sm:p-6 relative flex flex-col justify-between min-h-[290px] sm:min-h-[340px] rounded-2xl hover:border-[#B45309] transition-all duration-300 group shadow-sm hover:shadow-md"
             >
               {/* Hairline top border gradient on active panel */}
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#B45309] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

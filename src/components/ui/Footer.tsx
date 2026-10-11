@@ -17,11 +17,11 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative border-t border-slate-200 bg-white py-12 overflow-hidden text-slate-600">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-6">
+    <footer className="relative border-t border-slate-200 bg-white py-10 sm:py-12 overflow-hidden text-slate-600">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6">
         
         {/* Left: Brand copyright */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 text-center sm:text-left">
+        <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
           <span 
             onClick={() => handleScrollTo("home")}
             className="font-display text-sm tracking-[0.2em] font-bold text-slate-900 uppercase cursor-pointer hover:text-[#0D9488] transition-colors"
@@ -35,7 +35,7 @@ export default function Footer() {
         </div>
 
         {/* Center: Admin Portal shortcut */}
-        <div className="flex items-center gap-4 text-xs font-mono">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs font-mono">
           <a
             href="/admin"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-[#0D9488]/10 hover:text-[#0D9488] hover:border-[#0D9488]/40 transition-colors text-slate-700"
@@ -52,7 +52,7 @@ export default function Footer() {
         </div>
 
         {/* Right: Technical Location Coordinates */}
-        <div className="font-mono text-[9px] text-slate-400 flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+        <div className="font-mono text-[9px] text-slate-400 flex flex-col sm:flex-row items-center gap-1.5 sm:gap-4 text-center sm:text-right">
           <span>LOC // VADODARA, GUJARAT, INDIA</span>
           <span className="hidden sm:inline text-slate-300">/</span>
           <span className="text-[#B45309]">LAT: 22.3072° N // LON: 73.1812° E</span>

@@ -114,12 +114,12 @@ export default function FlagshipSystems() {
     <section
       id="flagship-systems"
       ref={containerRef}
-      className="relative py-24 border-t border-slate-200 bg-transparent overflow-hidden"
+      className="relative py-16 sm:py-24 border-t border-slate-200 bg-transparent overflow-hidden"
     >
-      <div className="absolute left-6 md:left-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
-      <div className="absolute right-6 md:right-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
+      <div className="hidden md:block absolute left-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
+      <div className="hidden md:block absolute right-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-12 w-full space-y-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-12 w-full space-y-16 sm:space-y-24">
         
         {/* Section Header */}
         <div className="flex items-center gap-4">
@@ -182,49 +182,49 @@ export default function FlagshipSystems() {
 
           {/* Right Column: Instrument Readout Panel */}
           <div className="lg:col-span-6 w-full">
-            <div className="border border-slate-200 bg-white p-6 rounded-2xl shadow-sm font-mono space-y-6">
+            <div className="border border-slate-200 bg-white p-4 sm:p-6 rounded-2xl shadow-sm font-mono space-y-5 sm:space-y-6">
               {/* Header bar */}
               <div className="flex justify-between items-center border-b border-slate-100 pb-3 text-[10px]">
-                <span className="text-slate-900 font-bold">INSTRUMENT READOUT // DETECT_MODE</span>
-                <span className="flex items-center gap-1.5">
+                <span className="text-slate-900 font-bold truncate">INSTRUMENT READOUT // DETECT_MODE</span>
+                <span className="flex items-center gap-1.5 shrink-0">
                   <span className="h-2 w-2 rounded-full bg-[#0D9488] animate-pulse" />
                   <span className="text-[#0D9488] font-bold">LIVE_FEED</span>
                 </span>
               </div>
 
               {/* Graphical Matrix Grid Overlay */}
-              <div className="h-44 border border-slate-200 relative bg-slate-50 overflow-hidden flex items-center justify-center rounded-xl">
+              <div className="h-40 sm:h-44 border border-slate-200 relative bg-slate-50 overflow-hidden flex items-center justify-center rounded-xl">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.03)_1px,transparent_1px)] bg-[size:16px_16px]" />
                 
                 {/* Bounding box visual simulation */}
-                <div className="absolute top-10 left-12 border border-[#0D9488] bg-[#0D9488]/10 p-2 w-32 h-20 flex flex-col justify-between rounded-lg shadow-xs">
+                <div className="absolute top-6 left-6 sm:top-10 sm:left-12 border border-[#0D9488] bg-[#0D9488]/10 p-2 w-28 sm:w-32 h-16 sm:h-20 flex flex-col justify-between rounded-lg shadow-xs">
                   <span className="text-[7px] text-[#0D9488] font-bold tracking-widest leading-none">VIOLATOR: 98.4%</span>
                   <span className="text-[6px] text-right text-slate-500 leading-none">LOC: 422,912</span>
                 </div>
                 
-                <div className="absolute bottom-6 right-10 border border-[#B45309] bg-[#B45309]/10 p-2 w-24 h-12 flex flex-col justify-between rounded-lg">
+                <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-10 border border-[#B45309] bg-[#B45309]/10 p-2 w-24 h-12 flex flex-col justify-between rounded-lg">
                   <span className="text-[7px] text-[#B45309] font-bold tracking-widest leading-none">COMPLIANCE: OK</span>
                 </div>
 
-                <div className="absolute top-3 left-4 text-[7px] text-slate-500 font-medium">MODEL: YOLOv11s_EDGE</div>
-                <div className="absolute bottom-3 left-4 text-[7px] text-slate-500 font-medium">FPS: 45.2 // THRESHOLD: 0.75</div>
+                <div className="absolute top-2.5 left-3 sm:top-3 sm:left-4 text-[7px] text-slate-500 font-medium">MODEL: YOLOv11s_EDGE</div>
+                <div className="absolute bottom-2.5 left-3 sm:bottom-3 sm:left-4 text-[7px] text-slate-500 font-medium">FPS: 45.2 // THRESHOLD: 0.75</div>
               </div>
 
               {/* Stats parameters */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="border border-slate-100 bg-slate-50 p-3 text-center rounded-xl">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+                <div className="border border-slate-100 bg-slate-50 p-2.5 sm:p-3 text-center rounded-xl">
                   <span className="text-[8px] text-slate-500 block uppercase">PRECISION</span>
                   <span className="text-sm font-bold text-[#0D9488] font-mono">{stats.precision}%</span>
                 </div>
-                <div className="border border-slate-100 bg-slate-50 p-3 text-center rounded-xl">
+                <div className="border border-slate-100 bg-slate-50 p-2.5 sm:p-3 text-center rounded-xl">
                   <span className="text-[8px] text-slate-500 block uppercase">RECALL</span>
                   <span className="text-sm font-bold text-[#0D9488] font-mono">{stats.recall}%</span>
                 </div>
-                <div className="border border-slate-100 bg-slate-50 p-3 text-center rounded-xl">
+                <div className="border border-slate-100 bg-slate-50 p-2.5 sm:p-3 text-center rounded-xl">
                   <span className="text-[8px] text-slate-500 block uppercase">F1 SCORE</span>
                   <span className="text-sm font-bold text-[#0D9488] font-mono">{stats.f1}%</span>
                 </div>
-                <div className="border border-slate-100 bg-slate-50 p-3 text-center rounded-xl">
+                <div className="border border-slate-100 bg-slate-50 p-2.5 sm:p-3 text-center rounded-xl">
                   <span className="text-[8px] text-slate-500 block uppercase">mAP@50</span>
                   <span className="text-sm font-bold text-[#0D9488] font-mono">{stats.map50}%</span>
                 </div>
@@ -284,20 +284,20 @@ export default function FlagshipSystems() {
 
           {/* Right Column: Instrument Readout Panel */}
           <div className="lg:col-span-6 w-full">
-            <div className="border border-slate-200 bg-white p-6 rounded-2xl shadow-sm font-mono space-y-6">
+            <div className="border border-slate-200 bg-white p-4 sm:p-6 rounded-2xl shadow-sm font-mono space-y-5 sm:space-y-6">
               {/* Header bar */}
               <div className="flex justify-between items-center border-b border-slate-100 pb-3 text-[10px]">
-                <span className="text-slate-900 font-bold">PHYSIOLOGICAL MESH // LANDMARK_MODE</span>
-                <span className="flex items-center gap-1.5">
+                <span className="text-slate-900 font-bold truncate">PHYSIOLOGICAL MESH // LANDMARK_MODE</span>
+                <span className="flex items-center gap-1.5 shrink-0">
                   <span className="h-2 w-2 rounded-full bg-[#B45309] animate-pulse" />
                   <span className="text-[#B45309] font-bold">INDEXING_NODES</span>
                 </span>
               </div>
 
               {/* Landmarks and live coordinate logs side-by-side */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {/* Facial coordinate simulation */}
-                <div className="h-44 border border-slate-200 relative bg-slate-50 overflow-hidden flex items-center justify-center p-4 rounded-xl">
+                <div className="h-40 sm:h-44 border border-slate-200 relative bg-slate-50 overflow-hidden flex items-center justify-center p-4 rounded-xl">
                   <div className="absolute inset-0 bg-[radial-gradient(rgba(15,23,42,0.06)_1.5px,transparent_1.5px)] bg-[size:12px_12px]" />
                   
                   {/* Facial landmark simulation drawing */}
@@ -316,7 +316,7 @@ export default function FlagshipSystems() {
                 </div>
 
                 {/* Coordinate stream logs */}
-                <div className="h-44 border border-slate-200 bg-slate-50 p-3 text-[8px] text-slate-600 overflow-hidden space-y-1.5 rounded-xl font-mono">
+                <div className="h-40 sm:h-44 border border-slate-200 bg-slate-50 p-3 text-[8px] text-slate-600 overflow-hidden space-y-1.5 rounded-xl font-mono">
                   <span className="text-slate-900 uppercase block font-bold border-b border-slate-200 pb-1 mb-2">VERTEX DATA STREAM</span>
                   {landmarks.map((mark) => (
                     <div key={mark.id} className="flex justify-between">
@@ -328,18 +328,18 @@ export default function FlagshipSystems() {
               </div>
 
               {/* Stats parameters */}
-              <div className="grid grid-cols-3 gap-3 border-t border-slate-100 pt-4">
-                <div className="text-center bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                  <span className="text-[8px] text-slate-500 block uppercase">VATA CONSTITUTION</span>
-                  <span className="text-sm font-bold text-slate-800">{dosha.vata}%</span>
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 border-t border-slate-100 pt-4">
+                <div className="text-center bg-slate-50 p-2 sm:p-2.5 rounded-xl border border-slate-100">
+                  <span className="text-[7px] sm:text-[8px] text-slate-500 block uppercase">VATA</span>
+                  <span className="text-xs sm:text-sm font-bold text-slate-800">{dosha.vata}%</span>
                 </div>
-                <div className="text-center bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                  <span className="text-[8px] text-slate-500 block uppercase">PITTA CONSTITUTION</span>
-                  <span className="text-sm font-bold text-[#B45309]">{dosha.pitta}%</span>
+                <div className="text-center bg-slate-50 p-2 sm:p-2.5 rounded-xl border border-slate-100">
+                  <span className="text-[7px] sm:text-[8px] text-slate-500 block uppercase">PITTA</span>
+                  <span className="text-xs sm:text-sm font-bold text-[#B45309]">{dosha.pitta}%</span>
                 </div>
-                <div className="text-center bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                  <span className="text-[8px] text-slate-500 block uppercase">KAPHA CONSTITUTION</span>
-                  <span className="text-sm font-bold text-[#0D9488]">{dosha.kapha}%</span>
+                <div className="text-center bg-slate-50 p-2 sm:p-2.5 rounded-xl border border-slate-100">
+                  <span className="text-[7px] sm:text-[8px] text-slate-500 block uppercase">KAPHA</span>
+                  <span className="text-xs sm:text-sm font-bold text-[#0D9488]">{dosha.kapha}%</span>
                 </div>
               </div>
             </div>

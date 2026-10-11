@@ -79,18 +79,18 @@ export default function StoreSection() {
   };
 
   return (
-    <section id="store" className="relative py-28 md:py-36 bg-slate-50/60 border-t border-slate-200 overflow-hidden">
+    <section id="store" className="relative py-16 sm:py-24 md:py-32 bg-slate-50/60 border-t border-slate-200 overflow-hidden">
       {/* Background ambient lighting */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#0D9488]/5 blur-[160px] pointer-events-none rounded-full" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 md:mb-20 space-y-3 sm:space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#0D9488]/30 bg-[#0D9488]/5 text-[11px] font-mono tracking-widest text-[#0D9488] uppercase font-bold">
             <Tag className="w-3.5 h-3.5" />
             {storeData.sectionTag}
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 font-display">
+          <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 font-display">
             {storeData.heading}
           </h2>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
@@ -99,7 +99,7 @@ export default function StoreSection() {
         </div>
 
         {/* Product Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
           {storeData.products && storeData.products.length > 0 ? (
             storeData.products.map((product) => (
               <motion.div
@@ -107,7 +107,7 @@ export default function StoreSection() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="group relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 hover:border-[#0D9488] transition-all duration-300 shadow-sm hover:shadow-md overflow-hidden"
+                className="group relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 hover:border-[#0D9488] transition-all duration-300 shadow-sm hover:shadow-md overflow-hidden"
               >
                 {/* Subtle top indicator */}
                 <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#0D9488] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -220,27 +220,28 @@ export default function StoreSection() {
       {/* Order Modal */}
       <AnimatePresence>
         {orderModalOpen && selectedProduct && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-2xl text-left overflow-y-auto max-h-[90vh]"
+              className="relative w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 sm:p-8 shadow-2xl text-left overflow-y-auto max-h-[90dvh] my-auto"
             >
               <button
                 onClick={() => setOrderModalOpen(false)}
-                className="absolute top-5 right-5 p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                aria-label="Close dialog"
               >
                 <X className="w-5 h-5" />
               </button>
 
               {orderSuccessId ? (
-                <div className="text-center py-8 space-y-4">
+                <div className="text-center py-6 sm:py-8 space-y-4">
                   <div className="w-16 h-16 rounded-full bg-[#0D9488]/10 border border-[#0D9488]/30 text-[#0D9488] flex items-center justify-center mx-auto">
                     <CheckCircle className="w-8 h-8" />
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900 font-display">Order Request Received</h3>
-                  <p className="text-sm text-slate-600 max-w-sm mx-auto">
+                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 font-display">Order Request Received</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 max-w-sm mx-auto">
                     Your institutional order requisition has been recorded. Our clinical hardware desk will review and reach out immediately with invoicing details.
                   </p>
                   <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 inline-block font-mono text-xs text-[#0D9488] font-bold">
@@ -249,7 +250,7 @@ export default function StoreSection() {
                   <div className="pt-4">
                     <button
                       onClick={() => setOrderModalOpen(false)}
-                      className="px-6 py-2.5 rounded-xl bg-slate-100 text-slate-800 hover:bg-slate-200 text-xs font-mono uppercase tracking-wider transition-all"
+                      className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-slate-100 text-slate-800 hover:bg-slate-200 text-xs font-mono uppercase tracking-wider transition-all"
                     >
                       Close Window
                     </button>
@@ -257,11 +258,11 @@ export default function StoreSection() {
                 </div>
               ) : (
                 <>
-                  <div className="space-y-1 mb-6">
+                  <div className="space-y-1 mb-5 sm:mb-6 pr-6">
                     <span className="text-[10px] font-mono text-[#0D9488] uppercase tracking-wider font-bold">
                       Commercial Hardware Requisition
                     </span>
-                    <h3 className="text-xl font-bold text-slate-900 font-display">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 font-display">
                       Procure {selectedProduct.name}
                     </h3>
                     <p className="text-xs text-slate-500">
@@ -269,8 +270,8 @@ export default function StoreSection() {
                     </p>
                   </div>
 
-                  <form onSubmit={handlePlaceOrder} className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <form onSubmit={handlePlaceOrder} className="space-y-3.5 sm:space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       <div>
                         <label className="block text-xs font-mono text-slate-600 mb-1 font-medium">Full Name *</label>
                         <input
@@ -279,7 +280,7 @@ export default function StoreSection() {
                           value={orderName}
                           onChange={(e) => setOrderName(e.target.value)}
                           placeholder="Dr. Rajesh Sharma"
-                          className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
+                          className="w-full px-3 py-2.5 sm:py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-base sm:text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
                         />
                       </div>
                       <div>
@@ -290,12 +291,12 @@ export default function StoreSection() {
                           value={orderEmail}
                           onChange={(e) => setOrderEmail(e.target.value)}
                           placeholder="r.sharma@hospital.org"
-                          className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
+                          className="w-full px-3 py-2.5 sm:py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-base sm:text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
                         />
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       <div>
                         <label className="block text-xs font-mono text-slate-600 mb-1 font-medium">Phone Number *</label>
                         <input
@@ -304,7 +305,7 @@ export default function StoreSection() {
                           value={orderPhone}
                           onChange={(e) => setOrderPhone(e.target.value)}
                           placeholder="+91 98765 43210"
-                          className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
+                          className="w-full px-3 py-2.5 sm:py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-base sm:text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
                         />
                       </div>
                       <div>
@@ -314,12 +315,12 @@ export default function StoreSection() {
                           value={orderOrg}
                           onChange={(e) => setOrderOrg(e.target.value)}
                           placeholder="AIIMS / Dept of Anatomy"
-                          className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
+                          className="w-full px-3 py-2.5 sm:py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-base sm:text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
                         />
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       <div>
                         <label className="block text-xs font-mono text-slate-600 mb-1 font-medium">Quantity</label>
                         <input
@@ -328,12 +329,12 @@ export default function StoreSection() {
                           max="50"
                           value={orderQuantity}
                           onChange={(e) => setOrderQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                          className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
+                          className="w-full px-3 py-2.5 sm:py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-base sm:text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-mono text-slate-600 mb-1 font-medium">Est. Total</label>
-                        <div className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-[#0D9488] text-xs font-mono font-bold">
+                        <div className="px-3 py-2.5 sm:py-2 rounded-lg bg-slate-50 border border-slate-200 text-[#0D9488] text-sm sm:text-xs font-mono font-bold">
                           ₹{(selectedProduct.price * orderQuantity).toLocaleString("en-IN")}
                         </div>
                       </div>
@@ -347,7 +348,7 @@ export default function StoreSection() {
                         value={orderAddress}
                         onChange={(e) => setOrderAddress(e.target.value)}
                         placeholder="Complete lab or hospital delivery address..."
-                        className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none resize-none"
+                        className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-base sm:text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none resize-none"
                       />
                     </div>
 
@@ -358,7 +359,7 @@ export default function StoreSection() {
                         value={orderNotes}
                         onChange={(e) => setOrderNotes(e.target.value)}
                         placeholder="Any custom voltage, cannula sizes, or procurement requirements..."
-                        className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none resize-none"
+                        className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-base sm:text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none resize-none"
                       />
                     </div>
 

@@ -90,24 +90,24 @@ export default function Contact() {
     <section
       id="contact"
       ref={sectionRef}
-      className="relative py-24 border-t border-slate-200 bg-transparent overflow-hidden"
+      className="relative py-16 sm:py-24 border-t border-slate-200 bg-transparent overflow-hidden"
     >
-      <div className="absolute left-6 md:left-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
-      <div className="absolute right-6 md:right-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
+      <div className="hidden md:block absolute left-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
+      <div className="hidden md:block absolute right-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-12 w-full">
         
         {/* Section Header */}
-        <div className="flex items-center gap-4 mb-16">
+        <div className="flex items-center gap-4 mb-10 sm:mb-16">
           <span className="font-mono text-xs text-[#B45309] font-semibold">05 // PARTNER WITH US</span>
           <div className="h-[1px] flex-1 bg-slate-200" />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20 items-start">
           {/* Left Column: Headline and Info */}
-          <div className="lg:col-span-6 space-y-8">
+          <div className="lg:col-span-6 space-y-6 sm:space-y-8">
             <div className="space-y-4">
-              <h2 className="font-display text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight uppercase leading-tight">
+              <h2 className="font-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 tracking-tight uppercase leading-tight">
                 Let's engineer the future of deep-tech.
               </h2>
               <p className="font-sans text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -137,7 +137,7 @@ export default function Contact() {
           <div className="lg:col-span-6 w-full">
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="border border-slate-200 bg-white p-6 sm:p-8 space-y-6 rounded-2xl shadow-sm"
+              className="border border-slate-200 bg-white p-5 sm:p-8 space-y-5 sm:space-y-6 rounded-2xl shadow-sm"
             >
               <h3 className="font-display text-xs uppercase tracking-widest text-slate-900 font-bold border-b border-slate-100 pb-3">
                 TRANSMIT // INQUIRY DATA
@@ -153,7 +153,7 @@ export default function Contact() {
                     id="name"
                     type="text"
                     placeholder="Dr. Rajesh Sharma"
-                    className="w-full bg-slate-50 border border-slate-300 px-4 py-2.5 font-sans text-sm text-slate-900 rounded-xl focus:bg-white focus:outline-none focus:border-[#0D9488]"
+                    className="w-full bg-slate-50 border border-slate-300 px-4 py-2.5 font-sans text-base sm:text-sm text-slate-900 rounded-xl focus:bg-white focus:outline-none focus:border-[#0D9488]"
                     {...register("name", { required: true })}
                     disabled={isSubmitting}
                   />
@@ -169,7 +169,7 @@ export default function Contact() {
                     id="email"
                     type="email"
                     placeholder="r.sharma@hospital.org"
-                    className="w-full bg-slate-50 border border-slate-300 px-4 py-2.5 font-sans text-sm text-slate-900 rounded-xl focus:bg-white focus:outline-none focus:border-[#0D9488]"
+                    className="w-full bg-slate-50 border border-slate-300 px-4 py-2.5 font-sans text-base sm:text-sm text-slate-900 rounded-xl focus:bg-white focus:outline-none focus:border-[#0D9488]"
                     {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
                     disabled={isSubmitting}
                   />
@@ -186,7 +186,7 @@ export default function Contact() {
                       id="phone"
                       type="text"
                       placeholder="+91 98765 43210"
-                      className="w-full bg-slate-50 border border-slate-300 px-4 py-2.5 font-sans text-sm text-slate-900 rounded-xl focus:bg-white focus:outline-none focus:border-[#0D9488]"
+                      className="w-full bg-slate-50 border border-slate-300 px-4 py-2.5 font-sans text-base sm:text-sm text-slate-900 rounded-xl focus:bg-white focus:outline-none focus:border-[#0D9488]"
                       {...register("phone", { required: true })}
                       disabled={isSubmitting}
                     />
@@ -200,7 +200,7 @@ export default function Contact() {
                       id="organization"
                       type="text"
                       placeholder="AIIMS / Research Institute"
-                      className="w-full bg-slate-50 border border-slate-300 px-4 py-2.5 font-sans text-sm text-slate-900 rounded-xl focus:bg-white focus:outline-none focus:border-[#0D9488]"
+                      className="w-full bg-slate-50 border border-slate-300 px-4 py-2.5 font-sans text-base sm:text-sm text-slate-900 rounded-xl focus:bg-white focus:outline-none focus:border-[#0D9488]"
                       {...register("organization", { required: true })}
                       disabled={isSubmitting}
                     />
@@ -217,7 +217,7 @@ export default function Contact() {
                     id="message"
                     rows={4}
                     placeholder="Describe collaboration or technology procurement scope..."
-                    className="w-full bg-slate-50 border border-slate-300 px-4 py-2.5 font-sans text-sm text-slate-900 rounded-xl focus:bg-white focus:outline-none focus:border-[#0D9488] resize-none"
+                    className="w-full bg-slate-50 border border-slate-300 px-4 py-2.5 font-sans text-base sm:text-sm text-slate-900 rounded-xl focus:bg-white focus:outline-none focus:border-[#0D9488] resize-none"
                     {...register("message", { required: true })}
                     disabled={isSubmitting}
                   />
@@ -229,7 +229,7 @@ export default function Contact() {
               <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
                 <button
                   type="submit"
-                  className="w-full sm:w-auto bg-[#0D9488] hover:bg-[#0F766E] text-white px-7 py-3 font-mono text-[10px] uppercase tracking-widest transition-all duration-300 rounded-xl cursor-pointer font-bold shadow-sm disabled:opacity-50"
+                  className="w-full sm:w-auto bg-[#0D9488] hover:bg-[#0F766E] text-white px-7 py-3 font-mono text-xs sm:text-[10px] uppercase tracking-widest transition-all duration-300 rounded-xl cursor-pointer font-bold shadow-sm disabled:opacity-50"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "TRANSMITTING..." : "TRANSMIT INQUIRY"}

@@ -70,15 +70,15 @@ export default function Capabilities() {
     <section
       id="capabilities"
       ref={containerRef}
-      className="relative py-24 border-t border-slate-200 bg-transparent overflow-hidden"
+      className="relative py-16 sm:py-24 border-t border-slate-200 bg-transparent overflow-hidden"
     >
-      <div className="absolute left-6 md:left-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
-      <div className="absolute right-6 md:right-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
+      <div className="hidden md:block absolute left-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
+      <div className="hidden md:block absolute right-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-12 w-full">
         
         {/* Section Header */}
-        <div className="flex items-center gap-4 mb-16">
+        <div className="flex items-center gap-4 mb-10 sm:mb-16">
           <span className="font-mono text-xs text-[#B45309] font-semibold">03 // CAPABILITIES</span>
           <div className="h-[1px] flex-1 bg-slate-200" />
         </div>
@@ -90,10 +90,10 @@ export default function Capabilities() {
             return (
               <div
                 key={item.id}
-                className={`group p-8 sm:p-12 transition-all duration-300 hover:bg-slate-50/70 border-slate-200 relative flex flex-col justify-between min-h-[300px]
+                className={`group p-5 sm:p-8 md:p-10 transition-all duration-300 hover:bg-slate-50/70 border-slate-200 relative flex flex-col justify-between min-h-[250px] sm:min-h-[290px]
                   ${index % 2 === 0 ? "md:border-r" : ""}
                   ${index < 2 ? "md:border-b" : ""}
-                  ${index > 0 ? "max-[560px]:border-t" : ""}
+                  ${index > 0 ? "border-t md:border-t-0" : ""}
                 `}
               >
                 {/* Subtle top indicator on hover */}
