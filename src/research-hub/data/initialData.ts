@@ -13,7 +13,7 @@ import {
 
 export const initialStatistics: HubStatistics = {
   projectsCount: "6",
-  experimentalStudiesCount: "5",
+  experimentalStudiesCount: "4",
   patentsIpCount: "2",
   researchAreasCount: "6",
   researchersCount: "6"
