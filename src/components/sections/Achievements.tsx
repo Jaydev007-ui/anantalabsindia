@@ -137,10 +137,10 @@ export default function Achievements() {
     };
   }, []);
 
-  const p = parseStat(stats.projectsCount, 18, "+");
-  const pat = parseStat(stats.patentsIpCount, 5, "+");
-  const exp = parseStat(stats.experimentalStudiesCount, 8, "+");
-  const res = parseStat(stats.researchAreasCount, 6, "+");
+  const p = parseStat(stats.projectsCount, 6, "");
+  const pat = parseStat(stats.patentsIpCount, 2, "");
+  const exp = parseStat(stats.experimentalStudiesCount, 5, "");
+  const res = parseStat(stats.researchAreasCount, 6, "");
 
   const statItems = [
     { value: p.value, suffix: p.suffix, label: "Research Projects", delay: 0.05 },

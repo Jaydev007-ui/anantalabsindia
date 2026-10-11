@@ -91,11 +91,11 @@ export interface SiteStatsData {
 }
 
 export const INITIAL_SITE_STATS: SiteStatsData = {
-  projectsCount: "18+",
-  experimentalStudiesCount: "8+",
-  patentsIpCount: "5+",
-  researchAreasCount: "6+",
-  researchersCount: "3+",
+  projectsCount: "6",
+  experimentalStudiesCount: "5",
+  patentsIpCount: "2",
+  researchAreasCount: "6",
+  researchersCount: "6",
 };
 
 export interface TeamMember {
