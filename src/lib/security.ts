@@ -42,7 +42,9 @@ export async function logExploitAttempt(type: string, details: string, reqUrl: s
     await insertThreat(threat);
     
     // Trigger external email dispatch using the API internal route handler (sends SMTP email)
-    const base = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const base =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
     await fetch(`${base}/api/threats`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
