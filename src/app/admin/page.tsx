@@ -298,6 +298,57 @@ export default function AdminPage() {
     } catch {}
   };
 
+  // ---------------- Order & Inquiry Status Actions ----------------
+  const handleUpdateOrderStatus = async (id: string, newStatus: string) => {
+    try {
+      const res = await fetch("/api/orders", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status: newStatus }),
+      });
+      if (res.ok) {
+        setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status: newStatus } : o)));
+        triggerSuccessAlert(`Order ${id} status set to ${newStatus}`);
+      }
+    } catch {}
+  };
+
+  const handleDeleteOrder = async (id: string) => {
+    if (!confirm("Are you sure you want to remove this order from records?")) return;
+    try {
+      const res = await fetch(`/api/orders?id=${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setOrders((prev) => prev.filter((o) => o.id !== id));
+        triggerSuccessAlert(`Order ${id} removed.`);
+      }
+    } catch {}
+  };
+
+  const handleUpdateInquiryStatus = async (id: string, newStatus: string) => {
+    try {
+      const res = await fetch("/api/inquiries", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status: newStatus }),
+      });
+      if (res.ok) {
+        setInquiries((prev) => prev.map((i) => (i.id === id ? { ...i, status: newStatus } : i)));
+        triggerSuccessAlert(`Inquiry status set to ${newStatus}`);
+      }
+    } catch {}
+  };
+
+  const handleDeleteInquiry = async (id: string) => {
+    if (!confirm("Are you sure you want to remove this inquiry?")) return;
+    try {
+      const res = await fetch(`/api/inquiries?id=${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setInquiries((prev) => prev.filter((i) => i.id !== id));
+        triggerSuccessAlert("Inquiry removed.");
+      }
+    } catch {}
+  };
+
   // ---------------- R&D Internal Submission ----------------
   const handleRDSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1209,19 +1260,33 @@ export default function AdminPage() {
           {/* TAB 5: ORDERS & INQUIRIES                            */}
           {/* ==================================================== */}
           {activeTab === "orders" && (
-            <div className="space-y-6">
-              <div className="pb-4 border-b border-white/10">
-                <h2 className="text-xl font-bold text-white font-display">Orders & Inquiries Queue</h2>
-                <p className="text-xs text-slate-400">
-                  Review customer commercial hardware requisitions from the Store and general inquiries.
-                </p>
+            <div className="space-y-8">
+              <div className="pb-4 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-xl font-bold text-white font-display">Orders & Inquiries Central</h2>
+                  <p className="text-xs text-slate-400">
+                    Live client queue: Review store hardware orders and incoming partnership inquiries in real time.
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="px-3 py-1 rounded-full text-xs font-mono bg-[#7FBFA0]/15 text-[#7FBFA0] border border-[#7FBFA0]/30 font-bold">
+                    Orders: {orders.length}
+                  </span>
+                  <span className="px-3 py-1 rounded-full text-xs font-mono bg-blue-500/15 text-blue-400 border border-blue-500/30 font-bold">
+                    Inquiries: {inquiries.length}
+                  </span>
+                </div>
               </div>
 
-              {/* Orders Table */}
-              <div className="space-y-3">
-                <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wider">
-                  Hardware Requisitions ({orders.length})
-                </h3>
+              {/* SECTION A: HARDWARE ORDERS */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wider flex items-center gap-2">
+                    <Package className="w-4 h-4 text-[#7FBFA0]" />
+                    Commercial Hardware Orders ({orders.length})
+                  </h3>
+                </div>
+
                 {orders.length === 0 ? (
                   <div className="p-8 rounded-2xl border border-dashed border-white/10 text-center text-xs text-slate-500">
                     No active commercial orders in queue.
@@ -1231,32 +1296,124 @@ export default function AdminPage() {
                     {orders.map((ord: any) => (
                       <div
                         key={ord.id}
-                        className="p-5 rounded-2xl border border-white/10 bg-[#0E1213] flex flex-col md:flex-row md:items-center justify-between gap-4"
+                        className="p-5 rounded-2xl border border-white/10 bg-[#0E1213] flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-sm hover:border-[#7FBFA0]/40 transition-all"
                       >
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
+                        <div className="space-y-1.5 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
                             <span className="font-mono text-xs font-bold text-[#7FBFA0]">{ord.id}</span>
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-white/5 border border-white/10 text-slate-300">
-                              {ord.status || "Pending"}
+                            <span className="text-[10px] font-mono text-slate-400">
+                              {ord.date ? new Date(ord.date).toLocaleString() : "Recent"}
                             </span>
                           </div>
-                          <h4 className="text-sm font-bold text-white">{ord.customerName}</h4>
-                          <p className="text-xs text-slate-400">
-                            {ord.email} • {ord.phone} • {ord.organization}
+                          <h4 className="text-sm font-bold text-white">
+                            {ord.customerName} <span className="font-normal text-slate-400">({ord.organization || "Private"})</span>
+                          </h4>
+                          <p className="text-xs text-slate-300">
+                            ✉ {ord.email} • 📞 {ord.phone}
                           </p>
-                          <p className="text-xs text-slate-500 mt-1">
-                            Specs: {ord.capacity} • Qty: {ord.quantity} • Address: {ord.address}
+                          <p className="text-xs text-slate-400 mt-1">
+                            Specs: <strong className="text-white">{ord.capacity}</strong> • Qty: <strong className="text-white">{ord.quantity}</strong> • Ship To: {ord.address}
                           </p>
                           {ord.comments && (
-                            <p className="text-xs text-[#7FBFA0]/80 font-mono mt-1">Notes: {ord.comments}</p>
+                            <p className="text-xs text-[#7FBFA0]/90 font-mono mt-1 bg-white/[0.02] p-2 rounded-lg border border-white/5">
+                              {ord.comments}
+                            </p>
                           )}
                         </div>
 
-                        <div className="text-right shrink-0">
-                          <div className="text-sm font-mono font-bold text-white">
-                            ₹{(ord.totalPrice || 25000).toLocaleString("en-IN")}
+                        <div className="flex flex-row lg:flex-col items-center lg:items-end justify-between gap-3 pt-3 lg:pt-0 border-t lg:border-t-0 border-white/5 shrink-0">
+                          <div className="text-right">
+                            <div className="text-base font-mono font-bold text-white">
+                              ₹{(ord.totalPrice || 25000).toLocaleString("en-IN")}
+                            </div>
                           </div>
-                          <div className="text-[10px] font-mono text-slate-500">{ord.date?.split("T")[0]}</div>
+
+                          <div className="flex items-center gap-2">
+                            {/* Status Selector */}
+                            <select
+                              value={ord.status || "Pending"}
+                              onChange={(e) => handleUpdateOrderStatus(ord.id, e.target.value)}
+                              className="px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-white/5 border border-white/10 text-white focus:border-[#7FBFA0] focus:outline-none cursor-pointer"
+                            >
+                              <option value="Pending" className="bg-[#0C0F12]">Pending</option>
+                              <option value="Processing" className="bg-[#0C0F12]">Processing</option>
+                              <option value="Shipped" className="bg-[#0C0F12]">Shipped</option>
+                              <option value="Completed" className="bg-[#0C0F12]">Completed</option>
+                              <option value="Cancelled" className="bg-[#0C0F12]">Cancelled</option>
+                            </select>
+
+                            <button
+                              onClick={() => handleDeleteOrder(ord.id)}
+                              className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors"
+                              title="Delete Order"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* SECTION B: CONTACT INQUIRIES */}
+              <div className="space-y-4 pt-6 border-t border-white/10">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wider flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-blue-400" />
+                    Incoming Partnership Inquiries ({inquiries.length})
+                  </h3>
+                </div>
+
+                {inquiries.length === 0 ? (
+                  <div className="p-8 rounded-2xl border border-dashed border-white/10 text-center text-xs text-slate-500">
+                    No inquiries recorded yet.
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {inquiries.map((inq: any) => (
+                      <div
+                        key={inq.id}
+                        className="p-5 rounded-2xl border border-white/10 bg-[#0E1213] flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-sm hover:border-blue-400/40 transition-all"
+                      >
+                        <div className="space-y-1.5 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="font-mono text-xs font-bold text-blue-400">{inq.id}</span>
+                            <span className="text-[10px] font-mono text-slate-400">
+                              {inq.date ? new Date(inq.date).toLocaleString() : "Recent"}
+                            </span>
+                          </div>
+                          <h4 className="text-sm font-bold text-white">
+                            {inq.name} <span className="font-normal text-slate-400">({inq.organization || "Independent"})</span>
+                          </h4>
+                          <p className="text-xs text-slate-300">
+                            ✉ {inq.email} • 📞 {inq.phone}
+                          </p>
+                          <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 text-xs text-slate-200 mt-2 font-sans">
+                            {inq.message}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 self-end lg:self-center shrink-0">
+                          {/* Status Selector */}
+                          <select
+                            value={inq.status || "Unread"}
+                            onChange={(e) => handleUpdateInquiryStatus(inq.id, e.target.value)}
+                            className="px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-white/5 border border-white/10 text-white focus:border-blue-400 focus:outline-none cursor-pointer"
+                          >
+                            <option value="Unread" className="bg-[#0C0F12]">Unread</option>
+                            <option value="Read" className="bg-[#0C0F12]">Read</option>
+                            <option value="Replied" className="bg-[#0C0F12]">Replied</option>
+                          </select>
+
+                          <button
+                            onClick={() => handleDeleteInquiry(inq.id)}
+                            className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors"
+                            title="Delete Inquiry"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
                         </div>
                       </div>
                     ))}

@@ -1,5 +1,7 @@
 "use client";
 
+import { Key } from "lucide-react";
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -15,31 +17,45 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative border-t border-white/5 bg-[#07090A] py-12 overflow-hidden">
-      <div className="absolute left-6 md:left-8 top-0 bottom-0 w-[1px] bg-white/5 pointer-events-none" />
-      <div className="absolute right-6 md:right-8 top-0 bottom-0 w-[1px] bg-white/5 pointer-events-none" />
-
-      <div className="mx-auto max-w-7xl px-8 md:px-12 w-full flex flex-col md:flex-row items-center justify-between gap-6">
+    <footer className="relative border-t border-slate-200 bg-white py-12 overflow-hidden text-slate-600">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-6">
         
         {/* Left: Brand copyright */}
-        <div className="flex flex-col md:flex-row items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 text-center sm:text-left">
           <span 
             onClick={() => handleScrollTo("home")}
-            className="font-display text-sm tracking-[0.2em] font-bold text-[#E8EDE9] uppercase cursor-pointer hover:text-[#7FBFA0] transition-colors"
+            className="font-display text-sm tracking-[0.2em] font-bold text-slate-900 uppercase cursor-pointer hover:text-[#0D9488] transition-colors"
           >
             ANANTA LABS
           </span>
-          <span className="hidden md:inline text-white/10">|</span>
-          <span className="font-mono text-[9px] text-[#8A9792] tracking-wider uppercase">
-            © {currentYear} ALL RIGHTS RESERVED. REGISTERED DEEP-TECH ORG
+          <span className="hidden sm:inline text-slate-300">|</span>
+          <span className="font-mono text-[10px] text-slate-500 tracking-wider uppercase">
+            © {currentYear} ALL RIGHTS RESERVED. DEEP-TECH R&D
           </span>
         </div>
 
+        {/* Center: Admin Portal shortcut */}
+        <div className="flex items-center gap-4 text-xs font-mono">
+          <a
+            href="/admin"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-[#0D9488]/10 hover:text-[#0D9488] hover:border-[#0D9488]/40 transition-colors text-slate-700"
+          >
+            <Key className="w-3.5 h-3.5 text-[#0D9488]" />
+            <span>Admin Executive Portal</span>
+          </a>
+          <a
+            href="/research"
+            className="hover:text-[#0D9488] transition-colors"
+          >
+            Research Hub
+          </a>
+        </div>
+
         {/* Right: Technical Location Coordinates */}
-        <div className="font-mono text-[9px] text-[#8A9792] flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+        <div className="font-mono text-[9px] text-slate-400 flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
           <span>LOC // VADODARA, GUJARAT, INDIA</span>
-          <span className="hidden sm:inline text-white/10">/</span>
-          <span className="text-[#C98A4B]">LAT: 22.3072° N // LON: 73.1812° E</span>
+          <span className="hidden sm:inline text-slate-300">/</span>
+          <span className="text-[#B45309]">LAT: 22.3072° N // LON: 73.1812° E</span>
         </div>
 
       </div>

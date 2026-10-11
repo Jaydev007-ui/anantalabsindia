@@ -87,27 +87,27 @@ export default function Hero() {
       className="relative min-h-screen flex flex-col justify-between pt-32 pb-16 bg-transparent overflow-hidden"
     >
       {/* Decorative vertical lines on sides to enhance lab instrument feel */}
-      <div className="absolute left-6 md:left-8 top-32 bottom-16 w-[1px] bg-white/5 pointer-events-none" />
-      <div className="absolute right-6 md:right-8 top-32 bottom-16 w-[1px] bg-white/5 pointer-events-none" />
+      <div className="absolute left-6 md:left-8 top-32 bottom-16 w-[1px] bg-slate-200 pointer-events-none" />
+      <div className="absolute right-6 md:right-8 top-32 bottom-16 w-[1px] bg-slate-200 pointer-events-none" />
 
       <div className="flex-1 flex items-center w-full max-w-7xl mx-auto px-8 md:px-12 z-10">
         <div className="max-w-4xl space-y-8">
           {/* Eyebrow */}
           <div
             ref={eyebrowRef}
-            className="font-mono text-xs uppercase tracking-widest text-[#C98A4B]"
+            className="font-mono text-xs uppercase tracking-widest text-[#B45309] font-semibold"
           >
             Deep-Tech R&D · Vadodara, Gujarat, India
           </div>
 
           {/* Masked Headline */}
-          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#E8EDE9] leading-[1.1] sm:leading-[1.05] uppercase">
+          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-slate-900 leading-[1.1] sm:leading-[1.05] uppercase">
             <span className="block overflow-hidden pb-1 sm:pb-2">
               <span ref={titleLine1Ref} className="block">
                 Engineering intelligence
               </span>
             </span>
-            <span className="block overflow-hidden pb-1 sm:pb-2 text-[#7FBFA0]">
+            <span className="block overflow-hidden pb-1 sm:pb-2 text-[#0D9488]">
               <span ref={titleLine2Ref} className="block">
                 for real-world systems.
               </span>
@@ -117,7 +117,7 @@ export default function Hero() {
           {/* Subheadline */}
           <p
             ref={subheadRef}
-            className="font-sans text-[#8A9792] text-base sm:text-lg max-w-2xl leading-relaxed"
+            className="font-sans text-slate-600 text-base sm:text-lg max-w-2xl leading-relaxed font-normal"
           >
             Developing state-of-the-art computer vision models, medical diagnostics hardware, and automated manufacturing pipelines for industry and academia.
           </p>
@@ -130,16 +130,23 @@ export default function Hero() {
             <button
               type="button"
               onClick={() => handleScrollTo("flagship-systems")}
-              className="inline-flex items-center justify-center border border-[#7FBFA0] bg-[#7FBFA0] text-[#07090A] hover:bg-transparent hover:text-[#7FBFA0] px-8 py-3.5 font-mono text-xs uppercase tracking-widest transition-all duration-300 rounded-none cursor-pointer"
+              className="inline-flex items-center justify-center border border-[#0D9488] bg-[#0D9488] text-white hover:bg-[#0F766E] px-8 py-3.5 font-mono text-xs uppercase tracking-widest transition-all duration-300 rounded-xl cursor-pointer shadow-sm"
             >
               View Flagship Systems
             </button>
             <button
               type="button"
-              onClick={() => handleScrollTo("patents")}
-              className="inline-flex items-center justify-center border border-white/10 bg-transparent hover:border-[#C98A4B] hover:text-[#C98A4B] px-8 py-3.5 font-mono text-xs uppercase tracking-widest text-[#8A9792] transition-all duration-300 rounded-none cursor-pointer"
+              onClick={() => handleScrollTo("store")}
+              className="inline-flex items-center justify-center border border-slate-300 bg-white hover:border-[#0D9488] hover:text-[#0D9488] px-8 py-3.5 font-mono text-xs uppercase tracking-widest text-slate-700 transition-all duration-300 rounded-xl cursor-pointer shadow-xs"
             >
-              Patents & Recognition
+              Hardware Store
+            </button>
+            <button
+              type="button"
+              onClick={() => handleScrollTo("patents")}
+              className="inline-flex items-center justify-center border border-slate-200 bg-slate-50 hover:border-[#B45309] hover:text-[#B45309] px-6 py-3.5 font-mono text-xs uppercase tracking-widest text-slate-600 transition-all duration-300 rounded-xl cursor-pointer"
+            >
+              Patents & IP
             </button>
           </div>
         </div>
@@ -150,9 +157,9 @@ export default function Hero() {
         <div
           ref={scrollCueRef}
           onClick={() => handleScrollTo("manifesto")}
-          className="group inline-flex items-center gap-3 font-mono text-[9px] uppercase tracking-widest text-[#8A9792] hover:text-[#7FBFA0] transition-colors cursor-pointer select-none"
+          className="group inline-flex items-center gap-3 font-mono text-[9px] uppercase tracking-widest text-slate-500 hover:text-[#0D9488] transition-colors cursor-pointer select-none"
         >
-          <span className="w-3 h-3 flex items-center justify-center border border-[#8A9792] group-hover:border-[#7FBFA0] transition-colors rounded-none text-[8px] font-bold">
+          <span className="w-4 h-4 flex items-center justify-center border border-slate-300 group-hover:border-[#0D9488] transition-colors rounded-full text-[9px] font-bold">
             ↓
           </span>
           <span>Scroll to Explore</span>

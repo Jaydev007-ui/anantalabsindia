@@ -355,3 +355,169 @@ export async function updateTarget(id: string, updates: Partial<TargetTask>): Pr
 
   return memoryTargets;
 }
+
+// ---------------- Orders Management ----------------
+let memoryOrders: any[] = [];
+
+export async function getAdminOrders(): Promise<any[]> {
+  try {
+    const col = await getCollection("orders");
+    if (col) {
+      const docs = await col.find({}).sort({ date: -1 }).toArray();
+      if (docs && docs.length > 0) {
+        memoryOrders = docs.map(({ _id, ...rest }) => rest);
+        return memoryOrders;
+      }
+    }
+  } catch (e) {
+    console.error("DB read error for orders", e);
+  }
+
+  memoryOrders = readLocalFile<any[]>("orders.json", memoryOrders);
+  return memoryOrders;
+}
+
+export async function saveAdminOrder(order: any): Promise<any[]> {
+  const current = await getAdminOrders();
+  const existingIdx = current.findIndex((o) => o.id === order.id);
+  if (existingIdx >= 0) {
+    current[existingIdx] = order;
+  } else {
+    current.unshift(order);
+  }
+  memoryOrders = current;
+  writeLocalFile("orders.json", current);
+
+  try {
+    const col = await getCollection("orders");
+    if (col) {
+      await col.updateOne({ id: order.id }, { $set: order }, { upsert: true });
+    }
+  } catch (e) {
+    console.error("DB write error for orders", e);
+  }
+
+  return memoryOrders;
+}
+
+export async function updateAdminOrderStatus(id: string, status: string): Promise<any[]> {
+  const current = await getAdminOrders();
+  const idx = current.findIndex((o) => o.id === id);
+  if (idx >= 0) {
+    current[idx].status = status;
+  }
+  memoryOrders = current;
+  writeLocalFile("orders.json", current);
+
+  try {
+    const col = await getCollection("orders");
+    if (col) {
+      await col.updateOne({ id }, { $set: { status } });
+    }
+  } catch (e) {
+    console.error("DB update error for orders", e);
+  }
+
+  return memoryOrders;
+}
+
+export async function deleteAdminOrder(id: string): Promise<any[]> {
+  const current = await getAdminOrders();
+  const filtered = current.filter((o) => o.id !== id);
+  memoryOrders = filtered;
+  writeLocalFile("orders.json", filtered);
+
+  try {
+    const col = await getCollection("orders");
+    if (col) {
+      await col.deleteOne({ id });
+    }
+  } catch (e) {
+    console.error("DB delete error for orders", e);
+  }
+
+  return memoryOrders;
+}
+
+// ---------------- Inquiries Management ----------------
+let memoryInquiries: any[] = [];
+
+export async function getAdminInquiries(): Promise<any[]> {
+  try {
+    const col = await getCollection("inquiries");
+    if (col) {
+      const docs = await col.find({}).sort({ date: -1 }).toArray();
+      if (docs && docs.length > 0) {
+        memoryInquiries = docs.map(({ _id, ...rest }) => rest);
+        return memoryInquiries;
+      }
+    }
+  } catch (e) {
+    console.error("DB read error for inquiries", e);
+  }
+
+  memoryInquiries = readLocalFile<any[]>("inquiries.json", memoryInquiries);
+  return memoryInquiries;
+}
+
+export async function saveAdminInquiry(inquiry: any): Promise<any[]> {
+  const current = await getAdminInquiries();
+  const existingIdx = current.findIndex((i) => i.id === inquiry.id);
+  if (existingIdx >= 0) {
+    current[existingIdx] = inquiry;
+  } else {
+    current.unshift(inquiry);
+  }
+  memoryInquiries = current;
+  writeLocalFile("inquiries.json", current);
+
+  try {
+    const col = await getCollection("inquiries");
+    if (col) {
+      await col.updateOne({ id: inquiry.id }, { $set: inquiry }, { upsert: true });
+    }
+  } catch (e) {
+    console.error("DB write error for inquiries", e);
+  }
+
+  return memoryInquiries;
+}
+
+export async function updateAdminInquiryStatus(id: string, status: string): Promise<any[]> {
+  const current = await getAdminInquiries();
+  const idx = current.findIndex((i) => i.id === id);
+  if (idx >= 0) {
+    current[idx].status = status;
+  }
+  memoryInquiries = current;
+  writeLocalFile("inquiries.json", current);
+
+  try {
+    const col = await getCollection("inquiries");
+    if (col) {
+      await col.updateOne({ id }, { $set: { status } });
+    }
+  } catch (e) {
+    console.error("DB update error for inquiries", e);
+  }
+
+  return memoryInquiries;
+}
+
+export async function deleteAdminInquiry(id: string): Promise<any[]> {
+  const current = await getAdminInquiries();
+  const filtered = current.filter((i) => i.id !== id);
+  memoryInquiries = filtered;
+  writeLocalFile("inquiries.json", filtered);
+
+  try {
+    const col = await getCollection("inquiries");
+    if (col) {
+      await col.deleteOne({ id });
+    }
+  } catch (e) {
+    console.error("DB delete error for inquiries", e);
+  }
+
+  return memoryInquiries;
+}

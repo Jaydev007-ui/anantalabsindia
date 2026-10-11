@@ -79,21 +79,21 @@ export default function StoreSection() {
   };
 
   return (
-    <section id="store" className="relative py-28 md:py-36 bg-[#07090A] border-t border-white/5 overflow-hidden">
+    <section id="store" className="relative py-28 md:py-36 bg-slate-50/60 border-t border-slate-200 overflow-hidden">
       {/* Background ambient lighting */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#7FBFA0]/5 blur-[160px] pointer-events-none rounded-full" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#0D9488]/5 blur-[160px] pointer-events-none rounded-full" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#7FBFA0]/20 bg-[#7FBFA0]/5 text-[11px] font-mono tracking-widest text-[#7FBFA0] uppercase">
-            <Tag className="w-3 h-3" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#0D9488]/30 bg-[#0D9488]/5 text-[11px] font-mono tracking-widest text-[#0D9488] uppercase font-bold">
+            <Tag className="w-3.5 h-3.5" />
             {storeData.sectionTag}
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white font-display">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 font-display">
             {storeData.heading}
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
             {storeData.subheading}
           </p>
         </div>
@@ -107,14 +107,14 @@ export default function StoreSection() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="group relative flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.02] p-6 hover:border-[#7FBFA0]/40 hover:bg-white/[0.04] transition-all duration-300 shadow-xl overflow-hidden backdrop-blur-sm"
+                className="group relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 hover:border-[#0D9488] transition-all duration-300 shadow-sm hover:shadow-md overflow-hidden"
               >
                 {/* Subtle top indicator */}
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#7FBFA0]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#0D9488] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
                 <div>
                   {/* Image / Visual */}
-                  <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-black/40 border border-white/5 mb-6 flex items-center justify-center">
+                  <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-slate-100 border border-slate-200 mb-6 flex items-center justify-center">
                     {product.imageUrl ? (
                       <img
                         src={product.imageUrl}
@@ -125,27 +125,27 @@ export default function StoreSection() {
                         }}
                       />
                     ) : (
-                      <div className="flex flex-col items-center justify-center text-slate-500 gap-2">
-                        <Layers className="w-10 h-10 text-[#7FBFA0]/50" />
-                        <span className="text-xs font-mono">ANANTA HARDWARE</span>
+                      <div className="flex flex-col items-center justify-center text-slate-400 gap-2">
+                        <Layers className="w-10 h-10 text-[#0D9488]/50" />
+                        <span className="text-xs font-mono font-medium">ANANTA HARDWARE</span>
                       </div>
                     )}
 
                     {/* Stock & Category Tags */}
                     <div className="absolute top-3 left-3 flex flex-wrap gap-2">
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono tracking-wider bg-black/80 border border-white/10 text-white backdrop-blur-md">
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono tracking-wider bg-white/90 border border-slate-200 text-slate-800 font-bold shadow-xs">
                         {product.category}
                       </span>
                     </div>
 
                     <div className="absolute top-3 right-3">
                       {product.inStock ? (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-[#7FBFA0]/20 border border-[#7FBFA0]/40 text-[#7FBFA0] backdrop-blur-md">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#7FBFA0] animate-pulse" />
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#0D9488]/15 border border-[#0D9488]/30 text-[#0D9488] shadow-xs">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#0D9488] animate-pulse" />
                           IN STOCK
                         </span>
                       ) : (
-                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-amber-500/10 border border-amber-500/30 text-amber-400 backdrop-blur-md">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/15 border border-amber-500/30 text-amber-700 shadow-xs">
                           PRE-ORDER
                         </span>
                       )}
@@ -153,25 +153,25 @@ export default function StoreSection() {
                   </div>
 
                   {/* Header info */}
-                  <div className="space-y-2 mb-4">
-                    <h3 className="text-xl font-bold text-white group-hover:text-[#7FBFA0] transition-colors font-display">
+                  <div className="space-y-1.5 mb-4">
+                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-[#0D9488] transition-colors font-display">
                       {product.name}
                     </h3>
-                    <p className="text-xs font-mono text-[#7FBFA0]/80 tracking-wide uppercase">
+                    <p className="text-xs font-mono text-[#0D9488] tracking-wide uppercase font-semibold">
                       {product.tagline}
                     </p>
-                    <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed">
+                    <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed pt-1">
                       {product.description}
                     </p>
                   </div>
 
                   {/* Key Specs */}
                   {product.specs && product.specs.length > 0 && (
-                    <div className="grid grid-cols-2 gap-2 my-4 pt-4 border-t border-white/5">
+                    <div className="grid grid-cols-2 gap-2 my-4 pt-4 border-t border-slate-100">
                       {product.specs.slice(0, 4).map((spec, sIdx) => (
-                        <div key={sIdx} className="bg-white/[0.02] border border-white/5 rounded-lg p-2 text-left">
+                        <div key={sIdx} className="bg-slate-50 border border-slate-100 rounded-lg p-2 text-left">
                           <div className="text-[10px] font-mono text-slate-500 uppercase">{spec.label}</div>
-                          <div className="text-xs font-bold text-slate-200 truncate">{spec.value}</div>
+                          <div className="text-xs font-bold text-slate-800 truncate">{spec.value}</div>
                         </div>
                       ))}
                     </div>
@@ -179,10 +179,10 @@ export default function StoreSection() {
 
                   {/* Features List */}
                   {product.features && product.features.length > 0 && (
-                    <ul className="space-y-1.5 mb-6 text-xs text-slate-400">
+                    <ul className="space-y-1.5 mb-6 text-xs text-slate-600">
                       {product.features.slice(0, 3).map((feat, fIdx) => (
                         <li key={fIdx} className="flex items-start gap-2">
-                          <CheckCircle className="w-3.5 h-3.5 text-[#7FBFA0] mt-0.5 shrink-0" />
+                          <CheckCircle className="w-3.5 h-3.5 text-[#0D9488] mt-0.5 shrink-0" />
                           <span>{feat}</span>
                         </li>
                       ))}
@@ -191,17 +191,17 @@ export default function StoreSection() {
                 </div>
 
                 {/* Bottom Price & Purchase CTA */}
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-4 mt-auto">
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-4 mt-auto">
                   <div>
-                    <div className="text-[10px] font-mono text-slate-500 uppercase">Unit Price</div>
-                    <div className="text-xl font-bold font-mono text-white">
+                    <div className="text-[10px] font-mono text-slate-500 uppercase font-medium">Unit Price</div>
+                    <div className="text-xl font-bold font-mono text-slate-900">
                       ₹{product.price.toLocaleString("en-IN")}
                     </div>
                   </div>
 
                   <button
                     onClick={() => openOrderModal(product)}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#7FBFA0] text-black font-semibold text-xs tracking-wider uppercase hover:bg-[#97d4b6] active:scale-95 transition-all shadow-lg shadow-[#7FBFA0]/20 cursor-pointer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0D9488] text-white font-bold text-xs tracking-wider uppercase hover:bg-[#0F766E] active:scale-95 transition-all shadow-sm cursor-pointer"
                   >
                     <ShoppingBag className="w-3.5 h-3.5" />
                     Order Now
@@ -210,8 +210,8 @@ export default function StoreSection() {
               </motion.div>
             ))
           ) : (
-            <div className="col-span-3 text-center py-16 border border-dashed border-white/10 rounded-2xl">
-              <p className="text-slate-400 text-sm">No hardware products currently listed in store catalog.</p>
+            <div className="col-span-3 text-center py-16 border border-dashed border-slate-200 rounded-2xl bg-white">
+              <p className="text-slate-500 text-sm">No hardware products currently listed in store catalog.</p>
             </div>
           )}
         </div>
@@ -220,36 +220,36 @@ export default function StoreSection() {
       {/* Order Modal */}
       <AnimatePresence>
         {orderModalOpen && selectedProduct && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-lg rounded-2xl border border-white/10 bg-[#0C0F12] p-6 sm:p-8 shadow-2xl text-left overflow-y-auto max-h-[90vh]"
+              className="relative w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-2xl text-left overflow-y-auto max-h-[90vh]"
             >
               <button
                 onClick={() => setOrderModalOpen(false)}
-                className="absolute top-5 right-5 p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors"
+                className="absolute top-5 right-5 p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
 
               {orderSuccessId ? (
                 <div className="text-center py-8 space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-[#7FBFA0]/10 border border-[#7FBFA0]/30 text-[#7FBFA0] flex items-center justify-center mx-auto">
+                  <div className="w-16 h-16 rounded-full bg-[#0D9488]/10 border border-[#0D9488]/30 text-[#0D9488] flex items-center justify-center mx-auto">
                     <CheckCircle className="w-8 h-8" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white font-display">Order Request Received</h3>
-                  <p className="text-sm text-slate-400 max-w-sm mx-auto">
+                  <h3 className="text-2xl font-bold text-slate-900 font-display">Order Request Received</h3>
+                  <p className="text-sm text-slate-600 max-w-sm mx-auto">
                     Your institutional order requisition has been recorded. Our clinical hardware desk will review and reach out immediately with invoicing details.
                   </p>
-                  <div className="p-3 rounded-xl bg-white/5 border border-white/10 inline-block font-mono text-xs text-[#7FBFA0]">
+                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 inline-block font-mono text-xs text-[#0D9488] font-bold">
                     Requisition ID: <strong>{orderSuccessId}</strong>
                   </div>
                   <div className="pt-4">
                     <button
                       onClick={() => setOrderModalOpen(false)}
-                      className="px-6 py-2.5 rounded-xl bg-white/10 text-white hover:bg-white/20 text-xs font-mono uppercase tracking-wider transition-all"
+                      className="px-6 py-2.5 rounded-xl bg-slate-100 text-slate-800 hover:bg-slate-200 text-xs font-mono uppercase tracking-wider transition-all"
                     >
                       Close Window
                     </button>
@@ -258,13 +258,13 @@ export default function StoreSection() {
               ) : (
                 <>
                   <div className="space-y-1 mb-6">
-                    <span className="text-[10px] font-mono text-[#7FBFA0] uppercase tracking-wider">
-                      Commercial Requisition
+                    <span className="text-[10px] font-mono text-[#0D9488] uppercase tracking-wider font-bold">
+                      Commercial Hardware Requisition
                     </span>
-                    <h3 className="text-xl font-bold text-white font-display">
+                    <h3 className="text-xl font-bold text-slate-900 font-display">
                       Procure {selectedProduct.name}
                     </h3>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-500">
                       Standard unit price: ₹{selectedProduct.price.toLocaleString("en-IN")} • GST & Delivery calculated upon dispatch
                     </p>
                   </div>
@@ -272,93 +272,93 @@ export default function StoreSection() {
                   <form onSubmit={handlePlaceOrder} className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-mono text-slate-400 mb-1">Full Name *</label>
+                        <label className="block text-xs font-mono text-slate-600 mb-1 font-medium">Full Name *</label>
                         <input
                           type="text"
                           required
                           value={orderName}
                           onChange={(e) => setOrderName(e.target.value)}
                           placeholder="Dr. Rajesh Sharma"
-                          className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:border-[#7FBFA0] focus:outline-none"
+                          className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-mono text-slate-400 mb-1">Email Address *</label>
+                        <label className="block text-xs font-mono text-slate-600 mb-1 font-medium">Email Address *</label>
                         <input
                           type="email"
                           required
                           value={orderEmail}
                           onChange={(e) => setOrderEmail(e.target.value)}
                           placeholder="r.sharma@hospital.org"
-                          className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:border-[#7FBFA0] focus:outline-none"
+                          className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-mono text-slate-400 mb-1">Phone Number *</label>
+                        <label className="block text-xs font-mono text-slate-600 mb-1 font-medium">Phone Number *</label>
                         <input
                           type="tel"
                           required
                           value={orderPhone}
                           onChange={(e) => setOrderPhone(e.target.value)}
                           placeholder="+91 98765 43210"
-                          className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:border-[#7FBFA0] focus:outline-none"
+                          className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-mono text-slate-400 mb-1">Institution / Org</label>
+                        <label className="block text-xs font-mono text-slate-600 mb-1 font-medium">Institution / Org</label>
                         <input
                           type="text"
                           value={orderOrg}
                           onChange={(e) => setOrderOrg(e.target.value)}
                           placeholder="AIIMS / Dept of Anatomy"
-                          className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:border-[#7FBFA0] focus:outline-none"
+                          className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-mono text-slate-400 mb-1">Quantity</label>
+                        <label className="block text-xs font-mono text-slate-600 mb-1 font-medium">Quantity</label>
                         <input
                           type="number"
                           min="1"
                           max="50"
                           value={orderQuantity}
                           onChange={(e) => setOrderQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                          className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:border-[#7FBFA0] focus:outline-none"
+                          className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-mono text-slate-400 mb-1">Est. Total</label>
-                        <div className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[#7FBFA0] text-xs font-mono font-bold">
+                        <label className="block text-xs font-mono text-slate-600 mb-1 font-medium">Est. Total</label>
+                        <div className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-[#0D9488] text-xs font-mono font-bold">
                           ₹{(selectedProduct.price * orderQuantity).toLocaleString("en-IN")}
                         </div>
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono text-slate-400 mb-1">Shipping & Delivery Address *</label>
+                      <label className="block text-xs font-mono text-slate-600 mb-1 font-medium">Shipping & Delivery Address *</label>
                       <textarea
                         required
                         rows={2}
                         value={orderAddress}
                         onChange={(e) => setOrderAddress(e.target.value)}
-                        placeholder="Complete lab or facility address..."
-                        className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:border-[#7FBFA0] focus:outline-none resize-none"
+                        placeholder="Complete lab or hospital delivery address..."
+                        className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none resize-none"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono text-slate-400 mb-1">Special Specifications / Invoicing Note</label>
+                      <label className="block text-xs font-mono text-slate-600 mb-1 font-medium">Special Specifications / Invoicing Note</label>
                       <textarea
                         rows={2}
                         value={orderNotes}
                         onChange={(e) => setOrderNotes(e.target.value)}
                         placeholder="Any custom voltage, cannula sizes, or procurement requirements..."
-                        className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:border-[#7FBFA0] focus:outline-none resize-none"
+                        className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:border-[#0D9488] focus:outline-none resize-none"
                       />
                     </div>
 
@@ -366,7 +366,7 @@ export default function StoreSection() {
                       <button
                         type="submit"
                         disabled={submitting}
-                        className="w-full py-3 rounded-xl bg-[#7FBFA0] text-black font-bold text-xs uppercase tracking-wider hover:bg-[#97d4b6] transition-all disabled:opacity-50 cursor-pointer shadow-lg shadow-[#7FBFA0]/20 flex items-center justify-center gap-2"
+                        className="w-full py-3 rounded-xl bg-[#0D9488] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#0F766E] transition-all disabled:opacity-50 cursor-pointer shadow-sm flex items-center justify-center gap-2"
                       >
                         {submitting ? "Transmitting Requisition..." : "Submit Institutional Purchase Order"}
                         <ArrowRight className="w-4 h-4" />

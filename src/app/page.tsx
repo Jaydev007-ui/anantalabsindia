@@ -52,7 +52,7 @@ export default function Home() {
         <Preloader onComplete={() => setLoading(false)} />
       )}
 
-      <div className="relative min-h-screen text-[#E8EDE9] bg-[#07090A] selection:bg-[#7FBFA0]/20 selection:text-white">
+      <div className="relative min-h-screen text-[#0F172A] bg-[#F8FAFC] selection:bg-[#0D9488]/20 selection:text-[#0F172A]">
         {/* Subtle Parallax Background Grid */}
         <div id="grid-bg" className="fixed inset-0 grid-noise-bg z-0 pointer-events-none" />
 

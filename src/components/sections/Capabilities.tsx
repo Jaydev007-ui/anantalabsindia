@@ -70,61 +70,61 @@ export default function Capabilities() {
     <section
       id="capabilities"
       ref={containerRef}
-      className="relative py-24 border-t border-white/5 bg-transparent overflow-hidden"
+      className="relative py-24 border-t border-slate-200 bg-transparent overflow-hidden"
     >
-      <div className="absolute left-6 md:left-8 top-0 bottom-0 w-[1px] bg-white/5 pointer-events-none" />
-      <div className="absolute right-6 md:right-8 top-0 bottom-0 w-[1px] bg-white/5 pointer-events-none" />
+      <div className="absolute left-6 md:left-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
+      <div className="absolute right-6 md:right-8 top-0 bottom-0 w-[1px] bg-slate-200 pointer-events-none" />
 
-      <div className="mx-auto max-w-7xl px-8 md:px-12 w-full">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-12 w-full">
         
         {/* Section Header */}
         <div className="flex items-center gap-4 mb-16">
-          <span className="font-mono text-xs text-[#C98A4B]">03 // CAPABILITIES</span>
-          <div className="h-[1px] flex-1 bg-white/5" />
+          <span className="font-mono text-xs text-[#B45309] font-semibold">03 // CAPABILITIES</span>
+          <div className="h-[1px] flex-1 bg-slate-200" />
         </div>
 
         {/* 4-Item Grid with Hairline Dividers */}
-        <div className="grid grid-cols-1 md:grid-cols-2 border border-white/5 bg-[#07090A] max-[560px]:grid-cols-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 border border-slate-200 bg-white rounded-2xl overflow-hidden shadow-sm">
           {capabilities.map((item, index) => {
             const IconComponent = item.icon;
             return (
               <div
                 key={item.id}
-                className={`group p-8 sm:p-12 transition-all duration-300 hover:bg-[#0E1213] border-white/5 relative flex flex-col justify-between min-h-[300px]
+                className={`group p-8 sm:p-12 transition-all duration-300 hover:bg-slate-50/70 border-slate-200 relative flex flex-col justify-between min-h-[300px]
                   ${index % 2 === 0 ? "md:border-r" : ""}
                   ${index < 2 ? "md:border-b" : ""}
                   ${index > 0 ? "max-[560px]:border-t" : ""}
                 `}
               >
                 {/* Subtle top indicator on hover */}
-                <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-[#7FBFA0] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#0D9488] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
 
                 <div className="space-y-6">
                   {/* Icon and label */}
                   <div className="flex items-center justify-between">
-                    <div className="border border-white/10 group-hover:border-[#7FBFA0] p-2 bg-[#0E1213] group-hover:bg-[#7FBFA0]/5 text-[#8A9792] group-hover:text-[#7FBFA0] transition-colors rounded-none">
+                    <div className="border border-slate-200 group-hover:border-[#0D9488] p-2.5 bg-slate-50 group-hover:bg-[#0D9488]/10 text-slate-700 group-hover:text-[#0D9488] transition-colors rounded-xl shadow-xs">
                       <IconComponent className="h-5 w-5" />
                     </div>
-                    <span className="font-mono text-[9px] text-[#8A9792] tracking-widest">
+                    <span className="font-mono text-[9px] text-slate-400 font-semibold tracking-widest">
                       SYS_SEC_0{index + 1}
                     </span>
                   </div>
 
                   {/* Title & Description */}
-                  <div className="space-y-3">
-                    <h3 className="font-display text-lg sm:text-xl font-bold text-[#E8EDE9] group-hover:text-[#7FBFA0] transition-colors uppercase tracking-tight">
+                  <div className="space-y-2">
+                    <h3 className="font-display text-lg sm:text-xl font-bold text-slate-900 group-hover:text-[#0D9488] transition-colors uppercase tracking-tight">
                       {item.title}
                     </h3>
-                    <p className="font-sans text-[#8A9792] text-xs sm:text-sm leading-relaxed max-w-md">
+                    <p className="font-sans text-slate-600 text-xs sm:text-sm leading-relaxed max-w-md">
                       {item.description}
                     </p>
                   </div>
                 </div>
 
                 {/* Technical Metric Row */}
-                <div className="pt-8 font-mono text-[9px] text-[#8A9792] border-t border-white/5 flex justify-between items-center mt-6">
+                <div className="pt-6 font-mono text-[9px] text-slate-500 border-t border-slate-100 flex justify-between items-center mt-6">
                   <span>{item.metric}</span>
-                  <span className="text-[#C98A4B] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="text-[#B45309] font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     ACTIVE_CORE // OK
                   </span>
                 </div>
