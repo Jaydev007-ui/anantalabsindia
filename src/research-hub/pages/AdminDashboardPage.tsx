@@ -30,8 +30,10 @@ import {
   TrendingUp,
   Sparkles,
   PlusCircle,
-  LogOut
+  LogOut,
+  Bot
 } from 'lucide-react';
+import { ChatbotAdminPanel } from '@/components/admin/ChatbotAdminPanel';
 import { useHubData, LeadSubmission, ExamCandidate } from '../data/store';
 import { 
   ResearchProject, 
@@ -91,7 +93,7 @@ export const AdminDashboardPage: React.FC = () => {
   const [pin, setPin] = useState('');
   const [authError, setAuthError] = useState('');
 
-  const [activeTab, setActiveTab] = useState<'projects' | 'researchers' | 'candidates' | 'knowledge' | 'stats' | 'leads' | 'analytics' | 'security' | 'sync'>('projects');
+  const [activeTab, setActiveTab] = useState<'projects' | 'researchers' | 'candidates' | 'knowledge' | 'stats' | 'leads' | 'analytics' | 'security' | 'sync' | 'chatbot'>('projects');
   const [knowledgeSubTab, setKnowledgeSubTab] = useState<'explainers' | 'knowledgeBase' | 'briefs' | 'trends'>('explainers');
 
   // Explainer Editor State
@@ -631,6 +633,21 @@ export const AdminDashboardPage: React.FC = () => {
         >
           <RefreshCcw className="w-4 h-4" />
           <span>JSON Sync & Restore</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('chatbot')}
+          className={`px-4 py-2 rounded-xl transition flex items-center gap-2 whitespace-nowrap ${
+            activeTab === 'chatbot'
+              ? 'bg-cyan-500/20 text-sky-700 border border-sky-300 font-bold'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+          }`}
+        >
+          <Bot className="w-4 h-4 text-cyan-600" />
+          <span>AI Chatbot Intelligence</span>
+          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-200 font-bold">
+            AI
+          </span>
         </button>
       </div>
 
@@ -2500,6 +2517,13 @@ export const AdminDashboardPage: React.FC = () => {
               Reset to Factory Initial Data
             </button>
           </div>
+        </div>
+      )}
+
+      {/* Tab: AI Chatbot Intelligence */}
+      {activeTab === 'chatbot' && (
+        <div className="bg-[#0A0D0F] text-slate-200 p-5 sm:p-8 rounded-2xl border border-white/10 shadow-2xl">
+          <ChatbotAdminPanel />
         </div>
       )}
     </div>
