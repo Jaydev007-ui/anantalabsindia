@@ -19,7 +19,11 @@ import {
   Zap,
   BrainCircuit,
   Factory,
-  Clock
+  Clock,
+  Save,
+  LogOut,
+  Edit3,
+  BarChart3
 } from 'lucide-react';
 import { useHubData } from '../data/store';
 import { InteractiveCanvas } from '../components/common/InteractiveCanvas';
@@ -33,9 +37,58 @@ export const HomePage: React.FC = () => {
   const [leadModalOpen, setLeadModalOpen] = useState(false);
   const [leadContext, setLeadContext] = useState<string | undefined>(undefined);
 
+  // Admin state detection for inline save/logout controls
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+
   React.useEffect(() => {
     trackPageView('/research');
+    try {
+      const a1 = localStorage.getItem("ananta_research_admin_auth") === "true";
+      const a2 = !!localStorage.getItem("ananta_admin_session");
+      setIsAdmin(a1 || a2);
+    } catch {}
   }, []);
+
+  const handleQuickSaveStats = async () => {
+    setIsSaving(true);
+    setSaveStatus("Saving...");
+    try {
+      await fetch('/api/stats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(stats),
+      });
+      await fetch('/api/hub', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stats }),
+      }).catch(() => {});
+      try {
+        localStorage.setItem('ananta_saved_stats', JSON.stringify(stats));
+        localStorage.setItem('ananta_stats_v2', JSON.stringify(stats));
+      } catch {}
+      setSaveStatus("Stats Saved Across Domain!");
+      setTimeout(() => setSaveStatus(null), 3500);
+    } catch {
+      setSaveStatus("Failed to save");
+      setTimeout(() => setSaveStatus(null), 3000);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleQuickLogout = () => {
+    try {
+      localStorage.removeItem("ananta_research_admin_auth");
+      sessionStorage.removeItem("ananta_research_admin_auth");
+      localStorage.removeItem("ananta_admin_session");
+      sessionStorage.removeItem("ananta_admin_session");
+    } catch {}
+    setIsAdmin(false);
+    window.location.reload();
+  };
 
   const featuredProjects = projects.filter(p => p.featured).slice(0, 4);
   const recentExplainers = explainers.slice(0, 3);
@@ -177,7 +230,7 @@ export const HomePage: React.FC = () => {
       {/* Dynamic Statistics Section (Section 6) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="p-8 bg-white border border-slate-200 rounded-3xl shadow-xs">
-          <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 pb-4 border-b border-slate-100 gap-4">
             <div>
               <h2 className="text-sm font-mono uppercase tracking-wider text-sky-700 font-semibold">
                 Ananta Labs Research Metrics
@@ -186,14 +239,53 @@ export const HomePage: React.FC = () => {
                 Validated R&D disclosures, active testbeds, and intellectual property.
               </p>
             </div>
-            <Link
-              to="/research/timeline"
-              className="text-xs font-mono text-slate-500 hover:text-sky-600 flex items-center gap-1 transition"
-            >
-              <span>View Timeline</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              {isAdmin && (
+                <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2 py-1 rounded-xl">
+                  {/* Save stats option beside logout */}
+                  <button
+                    onClick={handleQuickSaveStats}
+                    disabled={isSaving}
+                    className="px-3 py-1.5 bg-[#0D9488] hover:bg-[#0F766E] text-white rounded-lg text-xs font-mono font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer disabled:opacity-50"
+                    title="Save live stats across domain"
+                  >
+                    <Save className="w-3.5 h-3.5" />
+                    <span>{saveStatus || (isSaving ? "Saving..." : "Save stats")}</span>
+                  </button>
+                  <button
+                    onClick={handleQuickLogout}
+                    className="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 rounded-lg text-xs font-mono transition flex items-center gap-1 cursor-pointer font-medium"
+                    title="Logout Admin Session"
+                  >
+                    <LogOut className="w-3 h-3" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              )}
+              <Link
+                to="/research/admin"
+                className="text-xs font-mono text-slate-500 hover:text-sky-600 flex items-center gap-1 transition px-2 py-1 rounded-lg hover:bg-slate-50"
+                title="Open Research Hub Admin Portal"
+              >
+                <Edit3 className="w-3.5 h-3.5" />
+                <span>{isAdmin ? "Admin Console" : "Admin"}</span>
+              </Link>
+              <Link
+                to="/research/timeline"
+                className="text-xs font-mono text-slate-500 hover:text-sky-600 flex items-center gap-1 transition"
+              >
+                <span>View Timeline</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </div>
+
+          {saveStatus && (
+            <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-mono rounded-2xl flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>{saveStatus}</span>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">

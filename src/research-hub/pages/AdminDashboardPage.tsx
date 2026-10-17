@@ -29,7 +29,8 @@ import {
   Layers,
   TrendingUp,
   Sparkles,
-  PlusCircle
+  PlusCircle,
+  LogOut
 } from 'lucide-react';
 import { useHubData, LeadSubmission, ExamCandidate } from '../data/store';
 import { 
@@ -78,7 +79,15 @@ export const AdminDashboardPage: React.FC = () => {
     importJsonData
   } = useHubData();
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        return localStorage.getItem('ananta_research_admin_auth') === 'true' ||
+               sessionStorage.getItem('ananta_research_admin_auth') === 'true';
+      } catch {}
+    }
+    return false;
+  });
   const [pin, setPin] = useState('');
   const [authError, setAuthError] = useState('');
 
@@ -112,11 +121,25 @@ export const AdminDashboardPage: React.FC = () => {
   const [candidateTopicFilter, setCandidateTopicFilter] = useState('All');
 
   // Stats Editor State
-  const [editableStats, setEditableStats] = useState({ ...stats });
+  const [editableStats, setEditableStats] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('ananta_admin_editable_stats') || localStorage.getItem('ananta_saved_stats');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.projectsCount) return parsed;
+        }
+      } catch {}
+    }
+    return { ...stats };
+  });
+  const [statsSaving, setStatsSaving] = useState(false);
   const [statsSavedNotice, setStatsSavedNotice] = useState(false);
 
   useEffect(() => {
-    setEditableStats({ ...stats });
+    if (stats && stats.projectsCount) {
+      setEditableStats(prev => ({ ...prev, ...stats }));
+    }
   }, [stats]);
 
   // Import JSON State
@@ -128,15 +151,38 @@ export const AdminDashboardPage: React.FC = () => {
     if (pin === '9099093188') {
       setIsAuthenticated(true);
       setAuthError('');
+      try {
+        localStorage.setItem('ananta_research_admin_auth', 'true');
+        sessionStorage.setItem('ananta_research_admin_auth', 'true');
+      } catch {}
     } else {
       setAuthError('Incorrect pass key. Access denied.');
     }
   };
 
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    try {
+      localStorage.removeItem('ananta_research_admin_auth');
+      sessionStorage.removeItem('ananta_research_admin_auth');
+    } catch {}
+  };
+
   const handleStatsSave = async () => {
-    await updateStats(editableStats);
-    setStatsSavedNotice(true);
-    setTimeout(() => setStatsSavedNotice(false), 3000);
+    setStatsSaving(true);
+    try {
+      await updateStats(editableStats);
+      try {
+        localStorage.setItem('ananta_admin_editable_stats', JSON.stringify(editableStats));
+        localStorage.setItem('ananta_saved_stats', JSON.stringify(editableStats));
+      } catch {}
+      setStatsSavedNotice(true);
+      setTimeout(() => setStatsSavedNotice(false), 4000);
+    } catch (e) {
+      console.error('Error saving stats:', e);
+    } finally {
+      setStatsSaving(false);
+    }
   };
 
   const handleCreateNewResearcher = () => {
@@ -432,23 +478,44 @@ export const AdminDashboardPage: React.FC = () => {
           </h1>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          {/* Prominent Save Stats Button Beside Logout */}
+          <button
+            onClick={handleStatsSave}
+            disabled={statsSaving}
+            className="px-4 py-2 bg-[#0D9488] hover:bg-[#0F766E] text-white text-xs font-mono font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer disabled:opacity-50"
+            title="Save live statistics and publish updates across entire domain"
+          >
+            <Save className="w-3.5 h-3.5" />
+            <span>{statsSaving ? "Saving..." : "Save Stats"}</span>
+          </button>
+
           <button
             onClick={handleExportJson}
-            className="px-3.5 py-2 bg-white hover:bg-slate-100 border border-slate-200 text-xs font-mono text-sky-700 rounded-xl transition flex items-center gap-1.5"
+            className="px-3.5 py-2 bg-white hover:bg-slate-100 border border-slate-200 text-xs font-mono text-slate-700 rounded-xl transition flex items-center gap-1.5"
             title="Export repository backup as JSON"
           >
             <Download className="w-3.5 h-3.5" />
-            <span>Export Backup</span>
+            <span className="hidden sm:inline">Export Backup</span>
           </button>
+
           <button
-            onClick={() => setIsAuthenticated(false)}
-            className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-xs font-mono text-slate-600 rounded-xl transition"
+            onClick={handleLogout}
+            className="px-3 py-2 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-xs font-mono text-rose-700 rounded-xl transition flex items-center gap-1.5 cursor-pointer font-semibold"
+            title="End directorship session"
           >
-            Lock Session
+            <LogOut className="w-3.5 h-3.5" />
+            <span>Logout</span>
           </button>
         </div>
       </div>
+
+      {statsSavedNotice && (
+        <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center gap-2 text-xs font-mono text-emerald-800 font-semibold">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+          <span>Live statistics & repository changes saved successfully across the entire domain!</span>
+        </div>
+      )}
 
       {/* Navigation Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200 font-mono text-xs scrollbar-none whitespace-nowrap py-1">

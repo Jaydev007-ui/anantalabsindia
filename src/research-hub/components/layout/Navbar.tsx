@@ -17,7 +17,10 @@ import {
   ArrowUpRight,
   Sparkles,
   Layers,
-  Award
+  Award,
+  Save,
+  LogOut,
+  CheckCircle2
 } from 'lucide-react';
 import { SearchModal } from './SearchModal';
 import { LeadModal } from '../common/LeadModal';
@@ -28,6 +31,55 @@ export const Navbar: React.FC = () => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [leadModalOpen, setLeadModalOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+  // Admin session detection
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [saveNotice, setSaveNotice] = useState(false);
+  const [savingStats, setSavingStats] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      try {
+        const a1 = localStorage.getItem("ananta_research_admin_auth") === "true";
+        const a2 = !!localStorage.getItem("ananta_admin_session");
+        setIsAdmin(a1 || a2);
+      } catch {}
+    };
+    checkAuth();
+    window.addEventListener("storage", checkAuth);
+    return () => window.removeEventListener("storage", checkAuth);
+  }, []);
+
+  const handleQuickSaveStats = async () => {
+    setSavingStats(true);
+    try {
+      const stored = localStorage.getItem("ananta_saved_stats") || localStorage.getItem("ananta_stats_v2");
+      if (stored) {
+        await fetch("/api/stats", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: stored,
+        });
+      }
+      setSaveNotice(true);
+      setTimeout(() => setSaveNotice(false), 3500);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSavingStats(false);
+    }
+  };
+
+  const handleQuickLogout = () => {
+    try {
+      localStorage.removeItem("ananta_research_admin_auth");
+      sessionStorage.removeItem("ananta_research_admin_auth");
+      localStorage.removeItem("ananta_admin_session");
+      sessionStorage.removeItem("ananta_admin_session");
+    } catch {}
+    setIsAdmin(false);
+    window.location.reload();
+  };
 
   // Close dropdowns on route change
   useEffect(() => {
@@ -64,7 +116,28 @@ export const Navbar: React.FC = () => {
               <span className="text-[10px] font-bold text-slate-800 font-sans">Intel Partner Alliance</span>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
+            {isAdmin && (
+              <div className="flex items-center gap-1.5 bg-white border border-slate-200/80 px-2 py-0.5 rounded-md shadow-2xs">
+                <button
+                  onClick={handleQuickSaveStats}
+                  disabled={savingStats}
+                  className="px-2 py-0.5 rounded bg-[#0D9488] hover:bg-[#0F766E] text-white text-[10px] font-bold transition flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                  title="Save live statistics across entire domain"
+                >
+                  <Save className="w-3 h-3" />
+                  <span>{saveNotice ? "Saved!" : savingStats ? "Saving..." : "Save stats"}</span>
+                </button>
+                <button
+                  onClick={handleQuickLogout}
+                  className="px-1.5 py-0.5 rounded bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-[10px] font-medium transition flex items-center gap-0.5 cursor-pointer"
+                  title="Logout from Admin Session"
+                >
+                  <LogOut className="w-2.5 h-2.5" />
+                  <span>Logout</span>
+                </button>
+              </div>
+            )}
             <a href="/" className="hover:text-sky-600 transition flex items-center gap-1 text-slate-600 font-medium">
               <ArrowUpRight className="w-3 h-3 text-sky-600 rotate-[-90deg]" />
               <span>Main Website</span>

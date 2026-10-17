@@ -128,11 +128,16 @@ export default function AdminPage() {
   const [editingPatent, setEditingPatent] = useState<PatentItem | null>(null);
   const [isNewPatent, setIsNewPatent] = useState(false);
 
-  // Clear session on load to ensure passkey is asked every single time
+  // Restore admin session on load
   useEffect(() => {
     try {
-      localStorage.removeItem("ananta_admin_session");
-      sessionStorage.removeItem("ananta_admin_session");
+      const stored = localStorage.getItem("ananta_admin_session") || sessionStorage.getItem("ananta_admin_session");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed && (parsed.passkey === "9099093188" || parsed.passkey)) {
+          setCurrentUser(parsed);
+        }
+      }
     } catch {}
   }, []);
 
@@ -151,13 +156,28 @@ export default function AdminPage() {
         fetch("/api/stats", { cache: "no-store" }).then((r) => r.json()).catch(() => null),
       ]);
 
-      if (cRes?.data) setSiteContent(cRes.data);
+      if (cRes?.data && (cRes.data.hero || cRes.data.store)) {
+        setSiteContent(cRes.data);
+        try {
+          localStorage.setItem("ananta_site_content", JSON.stringify(cRes.data));
+        } catch {}
+      } else {
+        try {
+          const cachedContent = localStorage.getItem("ananta_site_content");
+          if (cachedContent) {
+            const parsed = JSON.parse(cachedContent);
+            if (parsed && (parsed.hero || parsed.store)) setSiteContent(parsed);
+          }
+        } catch {}
+      }
+
       if (tRes?.data) setTeamMembers(tRes.data);
       if (rdRes?.data) setRdItems(rdRes.data);
       if (attRes?.data) setAttendanceLogs(attRes.data);
       if (tarRes?.data) setTargets(tarRes.data);
       if (Array.isArray(oRes)) setOrders(oRes);
       if (Array.isArray(iRes)) setInquiries(iRes);
+
       if (sRes?.data) {
         setLiveStats(sRes.data);
         try {
@@ -201,6 +221,10 @@ export default function AdminPage() {
     if (key === "9099093188") {
       setCurrentUser(JAYDEV_ADMIN);
       setPasskeyInput("");
+      try {
+        localStorage.setItem("ananta_admin_session", JSON.stringify(JAYDEV_ADMIN));
+        sessionStorage.setItem("ananta_admin_session", JSON.stringify(JAYDEV_ADMIN));
+      } catch {}
       return;
     }
 
@@ -213,6 +237,10 @@ export default function AdminPage() {
         if (found) {
           setCurrentUser(found);
           setPasskeyInput("");
+          try {
+            localStorage.setItem("ananta_admin_session", JSON.stringify(found));
+            sessionStorage.setItem("ananta_admin_session", JSON.stringify(found));
+          } catch {}
           return;
         }
       }
@@ -256,6 +284,9 @@ export default function AdminPage() {
   // ---------------- Site Content Save ----------------
   const saveContentChanges = async (updated: SiteContentData) => {
     setSiteContent(updated);
+    try {
+      localStorage.setItem("ananta_site_content", JSON.stringify(updated));
+    } catch {}
     try {
       const res = await fetch("/api/content", {
         method: "POST",
@@ -759,14 +790,26 @@ export default function AdminPage() {
           >
             <RefreshCw className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${loading ? "animate-spin text-[#7FBFA0]" : ""}`} />
           </button>
+          {/* Prominent Save Stats Button Beside Logout */}
+          <button
+            onClick={handleSaveLiveStats}
+            disabled={statsSaving}
+            className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-lg bg-[#0D9488] hover:bg-[#0F766E] text-white text-[11px] sm:text-xs font-mono font-bold transition-all shadow-sm cursor-pointer disabled:opacity-50"
+            title="Save live statistics and publish across the domain"
+          >
+            <BarChart3 className="w-3.5 h-3.5" />
+            <span>{statsSaving ? "Saving..." : "Save Stats"}</span>
+          </button>
+
           <a
-            href="/"
+            href="/research"
             target="_blank"
             className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-mono text-slate-300 transition-colors"
           >
             <Eye className="w-3.5 h-3.5" />
-            View Live Site
+            View Research Hub
           </a>
+
           <button
             onClick={handleLogout}
             className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 text-[11px] sm:text-xs font-mono transition-colors cursor-pointer"

@@ -7,6 +7,8 @@ let clientPromise: Promise<MongoClient> | null = null;
 
 // Persistent cloud storage blobs on extendsclass.com (zero-config synchronization fallback)
 const BINS: Record<string, string> = {
+  content: "https://extendsclass.com/api/json-storage/bin/eafdfcd",
+  hub: "https://extendsclass.com/api/json-storage/bin/adcbacc",
   orders: "https://extendsclass.com/api/json-storage/bin/adbbfce",
   inquiries: "https://extendsclass.com/api/json-storage/bin/fefebbe",
   staff: "https://extendsclass.com/api/json-storage/bin/fcffbac",

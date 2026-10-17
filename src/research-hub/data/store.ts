@@ -179,9 +179,23 @@ export function useHubData() {
   const [knowledgeBase, setKnowledgeBaseState] = useState<KnowledgeArticle[]>(() => getStoredData(STORAGE_KEYS.KNOWLEDGE_BASE, initialKnowledgeBase));
   const timeline = initialTimelineMilestones;
 
-  // Sync Live Statistics across entire domain via central API
+  // Sync Live Statistics and Hub Registry across entire domain via central API
   useEffect(() => {
     let isMounted = true;
+
+    // 1. Initial client-side local cache hydration to prevent SSR mismatch
+    if (typeof window !== 'undefined') {
+      const localStats = getStoredData(STORAGE_KEYS.STATS, null) || getStoredData('ananta_saved_stats', null);
+      if (localStats && localStats.projectsCount) setStatsState(localStats);
+
+      const localProjects = getStoredData(STORAGE_KEYS.PROJECTS, null);
+      if (localProjects && Array.isArray(localProjects) && localProjects.length > 0) setProjectsState(localProjects);
+
+      const localResearchers = getStoredData(STORAGE_KEYS.RESEARCHERS, null);
+      if (localResearchers && Array.isArray(localResearchers) && localResearchers.length > 0) setResearchersState(localResearchers);
+    }
+
+    // 2. Fetch live stats from central API / Cloud KV
     fetch('/api/stats', { cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
@@ -192,6 +206,27 @@ export function useHubData() {
         }
       })
       .catch((e) => console.warn('Live stats fetch fallback to local:', e));
+
+    // 3. Fetch hub registry (projects, researchers) from central API / Cloud KV
+    fetch('/api/hub', { cache: 'no-store' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (isMounted && json?.success && json?.data) {
+          if (Array.isArray(json.data.projects) && json.data.projects.length > 0) {
+            setProjectsState(json.data.projects);
+            setStoredData(STORAGE_KEYS.PROJECTS, json.data.projects);
+          }
+          if (Array.isArray(json.data.researchers) && json.data.researchers.length > 0) {
+            setResearchersState(json.data.researchers);
+            setStoredData(STORAGE_KEYS.RESEARCHERS, json.data.researchers);
+          }
+          if (json.data.stats && json.data.stats.projectsCount) {
+            setStatsState(json.data.stats);
+            setStoredData(STORAGE_KEYS.STATS, json.data.stats);
+          }
+        }
+      })
+      .catch((e) => console.warn('Hub registry fetch fallback to local:', e));
 
     const handleStatsSync = (e: any) => {
       if (e?.detail) {
@@ -219,6 +254,11 @@ export function useHubData() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newStats),
       });
+      await fetch('/api/hub', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stats: newStats }),
+      }).catch(() => {});
       window.dispatchEvent(new CustomEvent('ananta_stats_updated', { detail: newStats }));
     } catch (e) {
       console.error('Failed to post live stats to /api/stats:', e);
@@ -236,6 +276,11 @@ export function useHubData() {
         updated = [project, ...prev];
       }
       setStoredData(STORAGE_KEYS.PROJECTS, updated);
+      fetch('/api/hub', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projects: updated }),
+      }).catch(() => {});
       return updated;
     });
   };
@@ -244,6 +289,11 @@ export function useHubData() {
     setProjectsState(prev => {
       const updated = prev.filter(p => p.id !== id && p.slug !== id);
       setStoredData(STORAGE_KEYS.PROJECTS, updated);
+      fetch('/api/hub', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projects: updated }),
+      }).catch(() => {});
       return updated;
     });
   };
@@ -259,6 +309,11 @@ export function useHubData() {
         updated = [...prev, researcher];
       }
       setStoredData(STORAGE_KEYS.RESEARCHERS, updated);
+      fetch('/api/hub', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ researchers: updated }),
+      }).catch(() => {});
       return updated;
     });
   };
@@ -267,6 +322,11 @@ export function useHubData() {
     setResearchersState(prev => {
       const updated = prev.filter(r => r.id !== id);
       setStoredData(STORAGE_KEYS.RESEARCHERS, updated);
+      fetch('/api/hub', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ researchers: updated }),
+      }).catch(() => {});
       return updated;
     });
   };

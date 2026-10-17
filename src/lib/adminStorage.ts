@@ -60,12 +60,13 @@ function writeLocalFile<T>(filename: string, data: T) {
 
 // ---------------- Site Content ----------------
 export async function getSiteContent(): Promise<SiteContentData> {
+  // 1. Try MongoDB
   try {
     const col = await getCollection("site_content");
     if (col) {
       const doc = await col.findOne({ _id: "current_content" as any });
       if (doc && doc.data) {
-        memoryContent = doc.data;
+        memoryContent = { ...INITIAL_SITE_CONTENT, ...doc.data };
         return memoryContent;
       }
     }
@@ -73,9 +74,20 @@ export async function getSiteContent(): Promise<SiteContentData> {
     console.error("DB read error for site_content", e);
   }
 
-  // Fallback to local file or memory
+  // 2. Try Cloud KV storage
+  try {
+    const cloud = await getKvData<SiteContentData>("content");
+    if (cloud && typeof cloud === "object" && (cloud.hero || cloud.store || cloud.manifesto)) {
+      memoryContent = { ...INITIAL_SITE_CONTENT, ...cloud };
+      return memoryContent;
+    }
+  } catch (e) {
+    console.error("Cloud KV read error for site_content:", e);
+  }
+
+  // 3. Fallback to local file or memory
   const fileData = readLocalFile<SiteContentData>("site_content.json", memoryContent);
-  memoryContent = fileData;
+  memoryContent = { ...INITIAL_SITE_CONTENT, ...fileData };
   return memoryContent;
 }
 
@@ -83,6 +95,14 @@ export async function saveSiteContent(data: SiteContentData): Promise<SiteConten
   memoryContent = data;
   writeLocalFile("site_content.json", data);
 
+  // Persist to Cloud KV
+  try {
+    await saveKvData("content", data);
+  } catch (e) {
+    console.error("Cloud KV write error for site_content:", e);
+  }
+
+  // Persist to MongoDB
   try {
     const col = await getCollection("site_content");
     if (col) {
@@ -97,6 +117,68 @@ export async function saveSiteContent(data: SiteContentData): Promise<SiteConten
   }
 
   return memoryContent;
+}
+
+export interface HubSyncData {
+  projects?: any[];
+  researchers?: any[];
+  stats?: any;
+  explainers?: any[];
+  experiments?: any[];
+  briefs?: any[];
+  trends?: any[];
+}
+
+// ---------------- Research Hub Registry Data ----------------
+export async function getHubData(): Promise<HubSyncData | null> {
+  try {
+    const col = await getCollection("hub_registry");
+    if (col) {
+      const doc = await col.findOne({ _id: "current_hub" as any });
+      if (doc && doc.data) return doc.data;
+    }
+  } catch (e) {
+    console.error("DB read error for hub_registry", e);
+  }
+
+  try {
+    const cloud = await getKvData<HubSyncData>("hub");
+    if (cloud && typeof cloud === "object" && (cloud.projects || cloud.researchers || cloud.stats)) {
+      return cloud;
+    }
+  } catch (e) {
+    console.error("Cloud KV read error for hub:", e);
+  }
+
+  const fileData = readLocalFile<HubSyncData | null>("hub_registry.json", null);
+  return fileData;
+}
+
+export async function saveHubData(data: Partial<HubSyncData>): Promise<HubSyncData> {
+  const current = (await getHubData()) || {};
+  const merged: HubSyncData = { ...current, ...data };
+  writeLocalFile("hub_registry.json", merged);
+
+  try {
+    await saveKvData("hub", merged);
+  } catch (e) {
+    console.error("Cloud KV write error for hub:", e);
+  }
+
+  try {
+    const col = await getCollection("hub_registry");
+    if (col) {
+      await col.updateOne(
+        { _id: "current_hub" as any },
+        { $set: { data: merged, updatedAt: new Date().toISOString() } },
+        { upsert: true }
+      );
+    }
+  } catch (e) {
+    console.error("DB write error for hub_registry", e);
+  }
+
+  return merged;
 }
 
 // ---------------- Team Members ----------------
