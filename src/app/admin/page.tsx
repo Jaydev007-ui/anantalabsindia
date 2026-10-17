@@ -34,8 +34,10 @@ import {
   Sparkles,
   ArrowRight,
   UserCheck,
+  Bot
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChatbotAdminPanel } from "@/components/admin/ChatbotAdminPanel";
 import {
   SiteContentData,
   SiteStatsData,
@@ -59,7 +61,7 @@ export default function AdminPage() {
 
   // Navigation Tabs
   const [activeTab, setActiveTab] = useState<
-    "store" | "patents" | "flagship" | "manifesto" | "stats" | "orders" | "team" | "rd" | "attendance" | "targets" | "analytics"
+    "store" | "patents" | "flagship" | "manifesto" | "stats" | "orders" | "team" | "rd" | "attendance" | "targets" | "analytics" | "chatbot"
   >("store");
 
   // Live Data Stores
@@ -987,6 +989,21 @@ export default function AdminPage() {
           >
             <BarChart3 className="w-4 h-4 shrink-0" />
             <span>Analytics & Progress</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("chatbot")}
+            className={`flex items-center gap-2 px-3 py-2 sm:py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer text-left whitespace-nowrap shrink-0 ${
+              activeTab === "chatbot"
+                ? "bg-[#7FBFA0] text-black font-bold shadow-md shadow-[#7FBFA0]/20"
+                : "text-slate-400 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <Bot className="w-4 h-4 shrink-0 text-cyan-400" />
+            <span>AI Chatbot Intelligence</span>
+            <span className="ml-1 sm:ml-auto text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold">
+              AI
+            </span>
           </button>
         </aside>
 
@@ -2459,6 +2476,11 @@ export default function AdminPage() {
               </div>
             </div>
           )}
+
+          {/* ==================================================== */}
+          {/* TAB 8: AI CHATBOT INTELLIGENCE                       */}
+          {/* ==================================================== */}
+          {activeTab === "chatbot" && <ChatbotAdminPanel />}
         </main>
       </div>
 
